@@ -2,6 +2,8 @@ package ProjetoJogo;
 
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class Korvus extends Lutador{
 
     public Korvus(){
@@ -10,7 +12,22 @@ public class Korvus extends Lutador{
 
     @Override
     public void mostraInformacoes(){
+        JOptionPane.showMessageDialog(null, "Korvus é um necromante poderoso, especializado em invocar os mortos e manipular a energia sombria. Ele é conhecido por sua sabedoria antiga e habilidades místicas que lhe permitem controlar o destino dos homens. Korvus é temido por sua capacidade de trazer mortos à vida e de desencadear temíveis maldições sobre seus inimigos.");
+    }
 
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Servos da Tumba";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Colosso da Cripta";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Drenar Alma";
     }
 
     @Override
@@ -26,9 +43,9 @@ public class Korvus extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou ataque rápido");
+            System.out.println(nome + " acertou servos da tumba");
         }else{
-            System.out.println(nome + "errou o ataque");
+            System.out.println(nome + "falhou ao invocar os servos da tumba");
         }
     }
 
@@ -52,10 +69,10 @@ public class Korvus extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou ataque especial");
+            System.out.println(nome + " acertou o Colosso da Cripta");
 
         }else{
-            System.out.println(nome + " errou o ataque");
+            System.out.println(nome + " Falhou ao invocar o Colosso da Cripta");
         }
     }
 

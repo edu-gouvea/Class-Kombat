@@ -16,6 +16,10 @@ public abstract class Lutador {
         this.especiaisRestantes = especiaisRestantes;
     }
 
+    public abstract String getNomeAtaqueRapido();
+    public abstract String getNomeAtaqueEspecial();
+    public abstract String getNomeAtaquePassiva();
+
     public abstract void mostraInformacoes();
     public abstract void habilidadePadrao(Lutador alvo);
     public abstract void habilidadeEspecial(Lutador alvo);

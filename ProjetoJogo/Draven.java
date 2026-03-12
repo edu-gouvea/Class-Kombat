@@ -11,7 +11,22 @@ public class Draven extends Lutador{
 
     @Override
     public void mostraInformacoes(){
-        JOptionPane.showMessageDialog(null, "");
+        JOptionPane.showMessageDialog(null, "Draven é um vampiro milenar que se destaca por sua força e agilidade sobrenaturais. Ele é um mestre em combate corpo a corpo, utilizando suas garras afiadas para dilacerar seus inimigos. Draven é conhecido por sua sede insaciável de sangue e sua habilidade de se transformar em um morcego para se mover rapidamente pelo campo de batalha. Ele é um adversário temível, capaz de causar danos devastadores e se recuperar rapidamente de ferimentos.");
+    }
+
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Punho Vampírico";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Mordida Sombria";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Forma de Morcego";
     }
 
     @Override

@@ -12,7 +12,22 @@ public class Artemis extends Lutador{
 
     @Override
     public void mostraInformacoes(){
-        JOptionPane.showMessageDialog(null, "");
+        JOptionPane.showMessageDialog(null, "Artemis é uma caçadora de recompensas ágil e letal, especializada em ataques à distância. Com sua mira precisa e habilidades furtivas, ela é capaz de eliminar alvos rapidamente antes que eles percebam sua presença. Artemis é conhecida por sua astúcia e capacidade de se adaptar a diferentes situações de combate, tornando-a uma adversária formidável para qualquer oponente.");
+    }
+
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Disparo Preciso";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Rajada de Flechas";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Flecha Venenosa";
     }
 
     @Override

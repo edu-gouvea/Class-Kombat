@@ -32,7 +32,7 @@ public class Combate {
     private Acao escolherAcao(Lutador l){
 
         String resposta = JOptionPane.showInputDialog(
-            l.getNome() + " escolha ação:\n1) Ataque rápido\n2) Ataque especial\n3) Ataque Passiva");
+            l.getNome() + " escolha ação:\n1) " + l.getNomeAtaqueRapido() + "\n2) " + l.getNomeAtaqueEspecial() + "\n3) " + l.getNomeAtaquePassiva());
 
         if(resposta.equals("1")){
             return Acao.ATAQUE_RAPIDO;

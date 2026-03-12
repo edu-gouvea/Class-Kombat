@@ -2,6 +2,8 @@ package ProjetoJogo;
 
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class Nyxra extends Lutador{
 
     public Nyxra() {
@@ -10,7 +12,22 @@ public class Nyxra extends Lutador{
 
     @Override
     public void mostraInformacoes(){
+        JOptionPane.showMessageDialog(null,"Nyxra era uma pessoa qualquer até ser possuída por um espírito maligno, o que a transformou em uma criatura sombria e poderosa. Ela é conhecida por sua força bruta e habilidades de combate implacáveis, além de sua capacidade de se regenerar rapidamente de ferimentos. Nyxra é temida por seus inimigos e respeitada por seus aliados, pois é uma guerreira feroz que luta com tudo o que tem para proteger aqueles que ama.");
+    }
 
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Garras da Noite";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Presas do Abismo";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Uivo do Terror";
     }
 
     @Override

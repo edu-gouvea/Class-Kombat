@@ -2,6 +2,8 @@ package ProjetoJogo;
 
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class Arkanis extends Lutador{
 
     public Arkanis(){
@@ -10,7 +12,22 @@ public class Arkanis extends Lutador{
 
     @Override
     public void mostraInformacoes(){
+        JOptionPane.showMessageDialog(null, "Arkanis é a rainha dos magos, devido ao seu grande talento para a magia ela foi capaz de dominar os quatro elementos e se tornar a mais poderosa maga do reino, ela é conhecida por sua inteligência e astúcia, além de ser uma líder nata, ela é respeitada por todos os magos do reino e tem um grande poder de influência sobre eles.");
+    }
 
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Faísca Arcana";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Explosão Ígnea";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Prisão de Gelo";
     }
 
     @Override

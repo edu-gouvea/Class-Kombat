@@ -2,6 +2,8 @@ package ProjetoJogo;
 
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
 public class Cassian extends Lutador{
 
     public Cassian() {
@@ -10,7 +12,23 @@ public class Cassian extends Lutador{
 
     @Override
     public void mostraInformacoes(){
+        JOptionPane.showMessageDialog(null, "Cassian é um paladino devoto do Deus da Luz, ele é conhecido por sua força e coragem em batalha, além de sua habilidade de curar a si mesmo e aos outros. Ele é um defensor da justiça e da ordem, e está sempre disposto a lutar contra as forças do mal para proteger os inocentes. Cassian é respeitado por seus aliados e temido por seus inimigos.");
+    }
+    }
 
+    @Override
+    public String getNomeAtaqueRapido() {
+        return "Ataque Consagrado";
+    }
+
+    @Override
+    public String getNomeAtaqueEspecial() {
+        return "Julgamento Divino";
+    }
+
+    @Override
+    public String getNomeAtaquePassiva() {
+        return "Oração de Proteção";
     }
 
     @Override

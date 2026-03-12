@@ -1,0 +1,146 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import url("https://fonts.cdnfonts.com/css/adlery-blockletter");
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+/* index.css */
+
+/* 1. Garante que o fundo e elementos fiquem pixelados (estilo SNES) */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* 2. O efeito de linhas de TV (Scanlines) que você viu na imagem do Zelda */
+.crt-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px; /* Isso cria a textura de monitor antigo */
+  pointer-events: none; /* Deixa você clicar no que está atrás */
+}
+
+/* 3. Estilo do título Class Kombat (Vermelho Sombrio com borda) */
+.zelda-shadow {
+  text-shadow:
+    4px 4px 0px #000,
+    -2px -2px 0px #000,
+    2px -2px 0px #000,
+    -2px 2px 0px #000;
+  filter: drop-shadow(0 0 15px rgba(255, 0, 0, 0.5));
+}
+/* index.css */
+
+/* ... (mantenha o .pixelated e .crt-overlay que já temos) ... */
+
+/* Estilo SNES para o Título "CLASS KOMBAT" */
+.zelda-title-style {
+  font-family: "Press Start 2P", cursive; /* Obrigatório usar fonte pixel */
+  color: #e61c1c; /* Vermelho vibrante */
+  text-shadow:
+    -3px -3px 0 #bfa156,
+    /* Borda Ouro Superior Esquerda */ 3px -3px 0 #bfa156,
+    /* Borda Ouro Superior Direita */ -3px 3px 0 #bfa156,
+    /* Borda Ouro Inferior Esquerda */ 3px 3px 0 #bfa156,
+    /* Borda Ouro Inferior Direita */ 5px 5px 0 #000000; /* Sombra Preta Final (profundidade) */
+}
+
+/* Estilo SNES para o Subtítulo */
+.zelda-subtitle-style {
+  font-family: "Press Start 2P", cursive;
+  color: #ffffff;
+  text-shadow: 2px 2px 0 #000;
+  letter-spacing: 0.1em;
+}
+
+/* Estilo SNES para o Rodapé (© Pedro Dev) */
+.zelda-footer-style {
+  font-family: "Press Start 2P", cursive;
+  color: #ffffff;
+  text-shadow: 1px 1px 0 #000;
+  letter-spacing: 0.05em;
+}
+.imagem-triforce,
+.imagem-espada {
+  filter: brightness(1.2) contrast(1.2);
+  background-color: transparent;
+}
+.font-pixel {
+  font-family: "Press Start 2P", cursive;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.font-adlery {
+  font-family: "Adlery Blockletter", sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}

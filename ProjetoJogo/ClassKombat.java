@@ -10,7 +10,11 @@ public class ClassKombat {
         menu();
         String escolha = escolheModo();
         select();
-        new Combate().fight(lutadores[0], lutadores[1]);
+        if (escolha.equals("1")){
+            new CombatePVP().fight(lutadores[0], lutadores[1]);    
+        }else{
+            new CombatePVE().fight(lutadores[0], lutadores[1]);
+        }
     }
 
     private void menu(){

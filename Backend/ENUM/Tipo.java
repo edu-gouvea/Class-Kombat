@@ -1,4 +1,4 @@
-package ProjetoJogo.ENUM;
+package Backend.ENUM;
 
 public enum Tipo {
 

@@ -1,18 +1,18 @@
-package ProjetoJogo.ClassKombat;
+package Backend.ClassKombat;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import ProjetoJogo.Combates.CombatePVE;
-import ProjetoJogo.Combates.CombatePVP;
-import ProjetoJogo.Personagens.Arkanis;
-import ProjetoJogo.Personagens.Artemis;
-import ProjetoJogo.Personagens.Cassian;
-import ProjetoJogo.Personagens.Draven;
-import ProjetoJogo.Personagens.Korvus;
-import ProjetoJogo.Personagens.Lutador;
-import ProjetoJogo.Personagens.Nyxra;
+import Backend.Combates.CombatePVE;
+import Backend.Combates.CombatePVP;
+import Backend.Personagens.Arkanis;
+import Backend.Personagens.Artemis;
+import Backend.Personagens.Cassian;
+import Backend.Personagens.Draven;
+import Backend.Personagens.Korvus;
+import Backend.Personagens.Lutador;
+import Backend.Personagens.Nyxra;
 
 public class ClassKombat {
 

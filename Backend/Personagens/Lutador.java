@@ -1,7 +1,7 @@
-package ProjetoJogo.Personagens;
+package Backend.Personagens;
 
-import ProjetoJogo.ENUM.Status;
-import ProjetoJogo.ENUM.Tipo;
+import Backend.ENUM.Status;
+import Backend.ENUM.Tipo;
 
 public abstract class Lutador {
     
@@ -54,14 +54,12 @@ public abstract class Lutador {
     }
     if (status == Status.ENVENENAMENTO){
         hp -= 7;
-        System.out.println(nome + " sofreu 5 de dano por sangramento");
+        System.out.println(nome + " sofreu 7 de dano por envenenamento");
     }
     if (status == Status.DANO_REDUZIDO){
-        dano *= 0.8;
         System.out.println(nome + " sofreu redução de dano");
     }
-    if (status == Status.DANO_REDUZIDO){
-        dano *= 1.2;
+    if (status == Status.DANO_AUMENTADO){
         System.out.println(nome + " recebeu aumento de dano");
     }
     if (status == Status.CONGELADO){
@@ -74,11 +72,11 @@ public abstract class Lutador {
         System.out.println(nome + " está com menos chance de ser atingido pelo próximo golpe");
     }
 
+    duracaoStatus--;
+
     if(duracaoStatus <= 0){
         status = Status.NORMAL;
     }
-
-    duracaoStatus--;
 
 }
     

@@ -1,11 +1,11 @@
-package ProjetoJogo.Personagens;
+package Backend.Personagens;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import ProjetoJogo.ENUM.Status;
-import ProjetoJogo.ENUM.Tipo;
+import Backend.ENUM.Status;
+import Backend.ENUM.Tipo;
 
 public class Korvus extends Lutador{
 
@@ -16,6 +16,7 @@ public class Korvus extends Lutador{
     Random r = new Random();
 
     private int danoPassiva = this.dano / 2;
+    private int hpMax = hp;
 
     @Override
     public void mostraInformacoes(){
@@ -46,9 +47,10 @@ public class Korvus extends Lutador{
 
         if (r.nextInt(100) < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+           double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(dano * mult);
+            int danoFinal = (int)(dano * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -72,9 +74,10 @@ public class Korvus extends Lutador{
         
         if (r.nextInt(100) < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(calculaDanoEspecial() * mult);
+            int danoFinal = (int)(calculaDanoEspecial() * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -90,6 +93,11 @@ public class Korvus extends Lutador{
     public void habilidadePassiva(Lutador alvo){
         alvo.receberDano(danoPassiva);
         this.hp += (danoPassiva);
+        
+        if (hp > hpMax){
+            hp = hpMax;
+        }
+
         System.out.println(nome + " conjurou o feitiço " + getNomeAtaquePassiva() + " e drenou " +
                             danoPassiva + " da vitalidade de " + alvo.getNome());
     }

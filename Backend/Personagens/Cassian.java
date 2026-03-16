@@ -1,11 +1,11 @@
-package ProjetoJogo.Personagens;
+package Backend.Personagens;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import ProjetoJogo.ENUM.Status;
-import ProjetoJogo.ENUM.Tipo;
+import Backend.ENUM.Status;
+import Backend.ENUM.Tipo;
 
 public class Cassian extends Lutador{
 
@@ -21,7 +21,6 @@ public class Cassian extends Lutador{
         "HP: " + this.hp + "\nDano: " + this.dano + "\nVelocidade: " + this.velocidade + "\nForte contra: Ladinos" + "\nFraco contra: Magos"  
         );
     }
-    
 
     @Override
     public String getNomeAtaqueRapido() {
@@ -38,6 +37,13 @@ public class Cassian extends Lutador{
         return "Oração de Proteção";
     }
 
+    private double cassianDanoAumentado(){
+        if (this.status == Status.DANO_AUMENTADO){
+            return 1.2;
+        }
+        return 1.0;
+    }
+
     @Override
     public void habilidadePadrao(Lutador alvo){
 
@@ -45,9 +51,10 @@ public class Cassian extends Lutador{
 
         if (r.nextInt(100) < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(dano * mult);
+            int danoFinal = (int)(cassianDanoAumentado() * dano * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -71,9 +78,10 @@ public class Cassian extends Lutador{
         
         if (r.nextInt(100) < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(calculaDanoEspecial() * mult);
+            int danoFinal = (int)(cassianDanoAumentado() * calculaDanoEspecial() * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -88,14 +96,14 @@ public class Cassian extends Lutador{
     @Override
     public void habilidadePassiva(Lutador alvo){
 
-        this.aplicarStatus(Status.DANO_AUMENTADO, 1);
+        this.aplicarStatus(Status.DANO_AUMENTADO, 2);
         System.out.println(nome + " realizou " + getNomeAtaquePassiva() +
                             " e receberá aumento de dano no próximo turno");
         
-        int prob = Status.calculaProb(alvo.getStatus(), this.status, 75);
+        int prob = Status.calculaProb(alvo.getStatus(), this.status, 65);
 
         if (r.nextInt(100) < prob){
-            alvo.aplicarStatus(Status.DANO_REDUZIDO, 1);
+            alvo.aplicarStatus(Status.DANO_REDUZIDO, 2);
             System.out.println(getNomeAtaquePassiva() + " obteve resultado máximo e fará " + alvo.getNome() +
                             " receber redução de dano no próximo turno");
         }

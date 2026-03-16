@@ -1,15 +1,15 @@
-package ProjetoJogo.Personagens;
+package Backend.Personagens;
 
 import java.util.Random;
 import javax.swing.JOptionPane;
 
-import ProjetoJogo.ENUM.Status;
-import ProjetoJogo.ENUM.Tipo;
+import Backend.ENUM.Status;
+import Backend.ENUM.Tipo;
 
 public class Draven extends Lutador{
 
     public Draven() {
-        super("Draven", 100, 23, 3, 2, Tipo.LADINOS, Status.NORMAL);
+        super("Draven", 100, 20, 3, 2, Tipo.LADINOS, Status.NORMAL);
     }
 
     Random r = new Random();
@@ -43,9 +43,10 @@ public class Draven extends Lutador{
         
         if (r.nextInt(100) < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(dano * mult);
+            int danoFinal = (int)(dano * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -72,9 +73,10 @@ public class Draven extends Lutador{
 
         if (aleatorio < prob){
 
-            double mult = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multTipo = Tipo.vantagem(this.tipo, alvo.getTipo());
+            double multStatus = Status.vantagemDeDano(this.status);
 
-            int danoFinal = (int)(calculaDanoEspecial() * mult);
+            int danoFinal = (int)(calculaDanoEspecial() * multTipo * multStatus);
 
             alvo.receberDano(danoFinal);
 
@@ -84,7 +86,7 @@ public class Draven extends Lutador{
             prob = Status.calculaProb(alvo.getStatus(), this.status, 50);
             
             if (aleatorio < prob){
-                alvo.aplicarStatus(Status.SANGRAMENTO, 2);
+                alvo.aplicarStatus(Status.SANGRAMENTO, 3);
                 System.out.println(getNomeAtaqueEspecial() + " obteve resultado máximo e fez " + alvo.getNome() + 
                                     " receber efeito de sangramento");
             }
@@ -97,7 +99,7 @@ public class Draven extends Lutador{
 
     @Override
     public void habilidadePassiva(Lutador alvo){
-        this.aplicarStatus(Status.INVISIVEL, 1);
+        this.aplicarStatus(Status.INVISIVEL, 2);
         System.out.println("Draven assumiu sua " + getNomeAtaquePassiva());
     }
 

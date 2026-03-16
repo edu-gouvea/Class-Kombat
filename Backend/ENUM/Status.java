@@ -1,4 +1,4 @@
-package ProjetoJogo.ENUM;
+package Backend.ENUM;
 
 public enum Status {
 
@@ -19,7 +19,13 @@ public enum Status {
         }
 
         return prob;
+    }
 
+    public static double vantagemDeDano(Status statusAlvo){
+        if (statusAlvo == Status.DANO_REDUZIDO){
+            return 0.8;
+        }
+        return 1.0;
     }
     public static boolean isCongelado(Status status){
         return status == Status.CONGELADO;

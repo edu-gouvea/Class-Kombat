@@ -1,26 +1,32 @@
 import { useState } from "react";
-import Telainicial from "./pages/TelaInicial"; // Importa a tela que criamos
+import Telainicial from "./pages/TelaInicial";
+import EscolhaPersonagem from "./pages/EscolhaPersonagem";
 
 function App() {
-  // Esse estado vai controlar se estamos na tela inicial ou já entramos no jogo
+  // Estado para controlar a navegação entre as telas
   const [jogoIniciado, setJogoIniciado] = useState(false);
+
+  // Estado opcional para armazenar o personagem que o jogador escolher
+  const [personagemSelecionado, setPersonagemSelecionado] = useState(null);
+
+  // Função chamada quando o jogador clica em "Confirmar" na seleção
+  const aoConfirmarPersonagem = (personagem) => {
+    setPersonagemSelecionado(personagem);
+    console.log("Iniciando aventura com:", personagem.name);
+    // Aqui você pode mudar para a tela de jogo/combate futuramente
+  };
 
   return (
     <div className="App">
-      {/* Se o jogo NÃO iniciou, mostra a Tela Inicial */}
       {!jogoIniciado ? (
+        /* Tela de Entrada */
         <Telainicial aoEntrar={() => setJogoIniciado(true)} />
       ) : (
-        /* Quando você clicar, essa div abaixo vai aparecer (sua próxima tela) */
-        <div className="h-screen w-screen bg-slate-900 flex items-center justify-center text-white">
-          <h1 className="text-4xl font-mono">TELA DE SELEÇÃO DE PERSONAGENS</h1>
-          <button
-            onClick={() => setJogoIniciado(false)}
-            className="ml-4 p-2 border border-white hover:bg-white hover:text-black transition"
-          >
-            Voltar
-          </button>
-        </div>
+        /* Tela de Seleção de Personagens */
+        <EscolhaPersonagem
+          onVoltar={() => setJogoIniciado(false)}
+          onConfirmar={aoConfirmarPersonagem}
+        />
       )}
     </div>
   );

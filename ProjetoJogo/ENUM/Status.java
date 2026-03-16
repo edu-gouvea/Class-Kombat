@@ -1,4 +1,4 @@
-package ProjetoJogo;
+package ProjetoJogo.ENUM;
 
 public enum Status {
 

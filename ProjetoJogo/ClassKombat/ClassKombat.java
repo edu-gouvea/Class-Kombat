@@ -1,6 +1,18 @@
-package ProjetoJogo;
+package ProjetoJogo.ClassKombat;
+
+import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ProjetoJogo.Combates.CombatePVE;
+import ProjetoJogo.Combates.CombatePVP;
+import ProjetoJogo.Personagens.Arkanis;
+import ProjetoJogo.Personagens.Artemis;
+import ProjetoJogo.Personagens.Cassian;
+import ProjetoJogo.Personagens.Draven;
+import ProjetoJogo.Personagens.Korvus;
+import ProjetoJogo.Personagens.Lutador;
+import ProjetoJogo.Personagens.Nyxra;
 
 public class ClassKombat {
 
@@ -10,11 +22,7 @@ public class ClassKombat {
         menu();
         String escolha = escolheModo();
         select();
-        if (escolha.equals("1")){
-            new CombatePVP().fight(lutadores[0], lutadores[1]);    
-        }else{
-            new CombatePVE().fight(lutadores[0], lutadores[1]);
-        }
+        rodaModo(escolha);
     }
 
     private void menu(){
@@ -24,15 +32,27 @@ public class ClassKombat {
         }
     }
 
-    private String escolheModo(){
-        String resposta = JOptionPane.showInputDialog("Qual modo deseja?\n1) PVP\n2) PVE");
-
-        if (resposta.equals("1") || resposta.equals("2")){
-            return resposta;
+    private void rodaModo(String modo){
+        if (modo.equals("1")){
+            new CombatePVP().fight(lutadores[0], lutadores[1]);
         }else{
-            JOptionPane.showMessageDialog(null, "Opção inválida");
-            return "";
+            new CombatePVE().fight(lutadores[0], lutadores[1]);
         }
+    }
+
+    private String escolheModo(){
+        
+        while (true){
+            String resposta = JOptionPane.showInputDialog("Qual modo deseja?\n1) PVP\n2) PVE");
+            
+            if (resposta.equals("1") || resposta.equals("2")){
+                return resposta;
+            }else{
+                JOptionPane.showMessageDialog(null, "Opção inválida");
+                continue;
+            }
+        }
+
     }
     
     private void select(){
@@ -50,7 +70,12 @@ public class ClassKombat {
     private String listaPersonagens(int i){
         String resposta = JOptionPane.showInputDialog("Player " + (i+1) + " escolha o personagem\n" +
                                                         "1) Arkanis\n2) Korvus\n" +
-                                                        "3) Nyxra\n4) Cassian\n5) Draven\n6) Artemis");
+                                                        "3) Nyxra\n4) Cassian\n5) Draven\n6) Artemis\n" +
+                                                        "7) Personagem aleatório");
+        if (resposta.equals("7")){
+            Random r = new Random();
+            return String.valueOf(r.nextInt(1, 7));
+        }
         return resposta;
     }
     

@@ -1,8 +1,11 @@
-package ProjetoJogo;
+package ProjetoJogo.Personagens;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.ENUM.Tipo;
 
 public class Arkanis extends Lutador{
 
@@ -46,7 +49,8 @@ public class Arkanis extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueRapido());
+            System.out.println(nome + " acertou " + getNomeAtaqueRapido() + " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
         }else{
             System.out.println(nome + " falhou ao conjurar a " + getNomeAtaqueRapido());
         }
@@ -71,7 +75,8 @@ public class Arkanis extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueEspecial());
+            System.out.println(nome + " acertou " + getNomeAtaqueEspecial()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
 
         }else{
             System.out.println(nome + " falhou ao conjurar a " + getNomeAtaqueEspecial());

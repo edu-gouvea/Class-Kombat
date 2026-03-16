@@ -1,6 +1,6 @@
-package ProjetoJogo;
+package ProjetoJogo.ClassKombat;
 
-public class TesteJogo {
+public class TesteClassKombat {
     public static void main(String[] args) {
         
         new ClassKombat().play();

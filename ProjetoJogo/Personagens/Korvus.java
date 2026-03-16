@@ -1,8 +1,11 @@
-package ProjetoJogo;
+package ProjetoJogo.Personagens;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.ENUM.Tipo;
 
 public class Korvus extends Lutador{
 
@@ -49,7 +52,8 @@ public class Korvus extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " invocou " + getNomeAtaqueRapido());
+            System.out.println(nome + " invocou " + getNomeAtaqueRapido()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
         }else{
             System.out.println(nome + " falhou ao invocar " + getNomeAtaqueRapido());
         }
@@ -64,7 +68,7 @@ public class Korvus extends Lutador{
         
         especiaisRestantes--;
 
-        int prob = Status.calculaProb(alvo.getStatus(), this.status, 60);
+        int prob = Status.calculaProb(alvo.getStatus(), this.status, 65);
         
         if (r.nextInt(100) < prob){
 
@@ -74,7 +78,8 @@ public class Korvus extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " invocou o " + getNomeAtaqueEspecial());
+            System.out.println(nome + " invocou o " + getNomeAtaqueEspecial()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
 
         }else{
             System.out.println(nome + " falhou ao invocar o " + getNomeAtaqueEspecial());
@@ -85,8 +90,8 @@ public class Korvus extends Lutador{
     public void habilidadePassiva(Lutador alvo){
         alvo.receberDano(danoPassiva);
         this.hp += (danoPassiva);
-        System.out.println(nome + "conjurou o feitiço " + getNomeAtaquePassiva() + " e drenou " +
-                            danoPassiva + " de " + alvo.getNome());
+        System.out.println(nome + " conjurou o feitiço " + getNomeAtaquePassiva() + " e drenou " +
+                            danoPassiva + " da vitalidade de " + alvo.getNome());
     }
 
     @Override

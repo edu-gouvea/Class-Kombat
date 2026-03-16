@@ -1,4 +1,7 @@
-package ProjetoJogo;
+package ProjetoJogo.Combates;
+
+import ProjetoJogo.ENUM.Acao;
+import ProjetoJogo.Personagens.Lutador;
 
 public interface Combate {
 

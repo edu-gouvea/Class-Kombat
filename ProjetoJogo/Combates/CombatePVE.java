@@ -1,8 +1,12 @@
-package ProjetoJogo;
+package ProjetoJogo.Combates;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ProjetoJogo.ENUM.Acao;
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.Personagens.Lutador;
 
 public class CombatePVE implements Combate{
 

@@ -1,12 +1,15 @@
-package ProjetoJogo;
+package ProjetoJogo.Personagens;
 
 import java.util.Random;
 import javax.swing.JOptionPane;
 
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.ENUM.Tipo;
+
 public class Draven extends Lutador{
 
     public Draven() {
-        super("Draven", 100, 25, 3, 2, Tipo.LADINOS, Status.NORMAL);
+        super("Draven", 100, 23, 3, 2, Tipo.LADINOS, Status.NORMAL);
     }
 
     Random r = new Random();
@@ -46,7 +49,8 @@ public class Draven extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueRapido());
+            System.out.println(nome + " acertou " + getNomeAtaqueRapido()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
 
         }else{
             System.out.println(nome + " falhou ao tentar " + getNomeAtaqueRapido());
@@ -63,7 +67,7 @@ public class Draven extends Lutador{
         
         especiaisRestantes--;
 
-        int prob = Status.calculaProb(alvo.getStatus(), this.status, 60);
+        int prob = Status.calculaProb(alvo.getStatus(), this.status, 65);
         int aleatorio = r.nextInt(100);
 
         if (aleatorio < prob){
@@ -74,13 +78,15 @@ public class Draven extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueEspecial());
+            System.out.println(nome + " acertou " + getNomeAtaqueEspecial()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
             
-            prob = Status.calculaProb(alvo.getStatus(), this.status, 40);
+            prob = Status.calculaProb(alvo.getStatus(), this.status, 50);
             
             if (aleatorio < prob){
                 alvo.aplicarStatus(Status.SANGRAMENTO, 2);
-                System.out.println(alvo.getNome() + " recebeu efeito de sangramento");
+                System.out.println(getNomeAtaqueEspecial() + " obteve resultado máximo e fez " + alvo.getNome() + 
+                                    " receber efeito de sangramento");
             }
 
         }else{

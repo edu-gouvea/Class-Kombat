@@ -1,8 +1,11 @@
-package ProjetoJogo;
+package ProjetoJogo.Personagens;
 
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.ENUM.Tipo;
 
 public class Cassian extends Lutador{
 
@@ -48,7 +51,8 @@ public class Cassian extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueRapido());
+            System.out.println(nome + " acertou " + getNomeAtaqueRapido()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
         }else{
             System.out.println(nome + " falhou ao tentar " + getNomeAtaqueRapido());
         }
@@ -73,7 +77,8 @@ public class Cassian extends Lutador{
 
             alvo.receberDano(danoFinal);
 
-            System.out.println(nome + " acertou " + getNomeAtaqueEspecial());
+            System.out.println(nome + " acertou " + getNomeAtaqueEspecial()+ " e causou " 
+                                + danoFinal + " de dano em " + alvo.getNome());
 
         }else{
             System.out.println(nome + " falhou ao tentar " + getNomeAtaqueEspecial());
@@ -82,24 +87,17 @@ public class Cassian extends Lutador{
 
     @Override
     public void habilidadePassiva(Lutador alvo){
-      
-        int prob = Status.calculaProb(alvo.getStatus(), this.status, 50);
 
-        int aleatorio = r.nextInt(100);
+        this.aplicarStatus(Status.DANO_AUMENTADO, 1);
+        System.out.println(nome + " realizou " + getNomeAtaquePassiva() +
+                            " e receberá aumento de dano no próximo turno");
+        
+        int prob = Status.calculaProb(alvo.getStatus(), this.status, 75);
 
-        if (aleatorio < prob){
-            this.aplicarStatus(Status.DANO_AUMENTADO, 1);
-            System.out.println(nome + " conseguiu realizar " + getNomeAtaquePassiva());
-            
-            prob = Status.calculaProb(alvo.getStatus(), this.status, 30);
-
-            if (aleatorio < prob){
-                alvo.aplicarStatus(Status.DANO_REDUZIDO, 1);
-                System.out.println(getNomeAtaquePassiva() + " obteve resultado máximo e fará " + alvo.getNome() +
-                                " receber redução de dano no próximo turno");
-            }
-        }else{
-            System.out.println(nome + " falhou ao tentar " + getNomeAtaquePassiva());
+        if (r.nextInt(100) < prob){
+            alvo.aplicarStatus(Status.DANO_REDUZIDO, 1);
+            System.out.println(getNomeAtaquePassiva() + " obteve resultado máximo e fará " + alvo.getNome() +
+                            " receber redução de dano no próximo turno");
         }
         
     }

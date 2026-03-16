@@ -1,4 +1,7 @@
-package ProjetoJogo;
+package ProjetoJogo.Personagens;
+
+import ProjetoJogo.ENUM.Status;
+import ProjetoJogo.ENUM.Tipo;
 
 public abstract class Lutador {
     
@@ -68,7 +71,7 @@ public abstract class Lutador {
         System.out.println(nome + " está com mais chance de acertar próximo golpe");
     }
     if (status == Status.INVISIVEL){
-        System.out.println(nome + "está com menos chance de ser atingido pelo próximo golpe");
+        System.out.println(nome + " está com menos chance de ser atingido pelo próximo golpe");
     }
 
     if(duracaoStatus <= 0){

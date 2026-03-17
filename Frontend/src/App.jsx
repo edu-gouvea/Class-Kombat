@@ -1,32 +1,65 @@
-import { useState } from "react";
-import Telainicial from "./pages/TelaInicial";
+import React, { useState } from "react";
+import TelaInicial from "./pages/TelaInicial";
+import EscolhaModo from "./pages/EscolhaModo";
 import EscolhaPersonagem from "./pages/EscolhaPersonagem";
 
 function App() {
-  // Estado para controlar a navegação entre as telas
-  const [jogoIniciado, setJogoIniciado] = useState(false);
+  const [tela, setTela] = useState("inicial");
+  const [configJogo, setConfigJogo] = useState({
+    modo: null,
+    herois: [],
+  });
 
-  // Estado opcional para armazenar o personagem que o jogador escolher
-  const [personagemSelecionado, setPersonagemSelecionado] = useState(null);
+  const irParaEscolhaModo = () => setTela("modo");
 
-  // Função chamada quando o jogador clica em "Confirmar" na seleção
-  const aoConfirmarPersonagem = (personagem) => {
-    setPersonagemSelecionado(personagem);
-    console.log("Iniciando aventura com:", personagem.name);
-    // Aqui você pode mudar para a tela de jogo/combate futuramente
+  const escolherModo = (modoSelecionado) => {
+    setConfigJogo((prev) => ({ ...prev, modo: modoSelecionado }));
+    setTela("personagem");
+  };
+
+  const confirmarSelecao = (heroisSelecionados) => {
+    setConfigJogo((prev) => ({ ...prev, herois: heroisSelecionados }));
+    setTela("jogo");
+  };
+
+  const voltar = () => {
+    if (tela === "modo") setTela("inicial");
+    if (tela === "personagem") setTela("modo");
   };
 
   return (
-    <div className="App">
-      {!jogoIniciado ? (
-        /* Tela de Entrada */
-        <Telainicial aoEntrar={() => setJogoIniciado(true)} />
-      ) : (
-        /* Tela de Seleção de Personagens */
-        <EscolhaPersonagem
-          onVoltar={() => setJogoIniciado(false)}
-          onConfirmar={aoConfirmarPersonagem}
-        />
+    <div className="bg-slate-950 min-h-screen">
+      {/* ALTERADO DE onIniciar PARA aoEntrar */}
+      {tela === "inicial" && <TelaInicial aoEntrar={irParaEscolhaModo} />}
+
+      {tela === "modo" && (
+        <EscolhaModo onSelecionarModo={escolherModo} onVoltar={voltar} />
+      )}
+
+      {tela === "personagem" && (
+        <EscolhaPersonagem onConfirmar={confirmarSelecao} onVoltar={voltar} />
+      )}
+
+      {tela === "jogo" && (
+        <div className="flex flex-col items-center justify-center h-screen text-white font-mono">
+          <h1 className="text-4xl mb-4 uppercase italic font-black text-purple-500">
+            {configJogo.modo} Iniciado!
+          </h1>
+          <div className="flex gap-4">
+            {configJogo.herois.map((h) => (
+              <div key={h.id} className="border-2 border-white p-4">
+                <p>{h.name}</p>
+                <p className="text-xs text-slate-400">{h.class}</p>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => setTela("inicial")}
+            className="mt-10 text-red-500 font-bold hover:underline"
+          >
+            SAIR
+          </button>
+        </div>
       )}
     </div>
   );

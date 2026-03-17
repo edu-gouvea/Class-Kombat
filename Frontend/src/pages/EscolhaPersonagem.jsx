@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-// Importação das imagens da pasta assets
+// Importação das imagens
 import imgKorvus from "../assets/korvus.jpeg";
 import imgArkanis from "../assets/arkanis.jpeg";
 import imgCassian from "../assets/cassian.jpeg";
@@ -9,6 +9,8 @@ import imgDraaven from "../assets/draven.jpeg";
 import imgArtemis from "../assets/artemis.jpeg";
 
 const characters = [
+  // A opção "Aleatório" tem um ID especial (0)
+  { id: 0, name: "Aleatório", class: "Sorte do Destino", image: null },
   { id: 1, name: "Korvus", class: "Necromante", image: imgKorvus },
   { id: 2, name: "Arkanis", class: "Maga Elemental", image: imgArkanis },
   { id: 3, name: "Cassian", class: "Paladino Dracônico", image: imgCassian },
@@ -18,25 +20,30 @@ const characters = [
 ];
 
 const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
-  // Agora usamos um array para armazenar até 2 seleções
   const [selectedIds, setSelectedIds] = useState([]);
 
   const togglePersonagem = (id) => {
     if (selectedIds.includes(id)) {
-      // Se já estiver selecionado, removemos da lista
       setSelectedIds(selectedIds.filter((favId) => favId !== id));
-    } else {
-      // Se não estiver selecionado e houver menos de 2, adicionamos
-      if (selectedIds.length < 2) {
-        setSelectedIds([...selectedIds, id]);
-      }
+    } else if (selectedIds.length < 2) {
+      setSelectedIds([...selectedIds, id]);
     }
   };
 
   const handleConfirmar = () => {
-    // Retorna os objetos completos dos personagens escolhidos
-    const escolhidos = characters.filter((c) => selectedIds.includes(c.id));
-    if (onConfirmar) onConfirmar(escolhidos);
+    // Filtra os heróis reais (IDs de 1 a 6) para o sorteio
+    const heroisReais = characters.filter((c) => c.id !== 0);
+
+    // Mapeia as escolhas. Se for ID 0, sorteia um herói real aleatório
+    const finalSelection = selectedIds.map((id) => {
+      if (id === 0) {
+        const randomIndex = Math.floor(Math.random() * heroisReais.length);
+        return heroisReais[randomIndex];
+      }
+      return characters.find((c) => c.id === id);
+    });
+
+    if (onConfirmar) onConfirmar(finalSelection);
   };
 
   return (
@@ -50,7 +57,7 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
 
       <div className="z-10 mb-6 text-center">
         <h1 className="text-4xl md:text-5xl tracking-widest uppercase border-b-4 border-purple-600 pb-2 drop-shadow-[0_0_10px_rgba(147,51,234,0.5)]">
-          Escolha seu Personagem
+          Escolha seu Herói
         </h1>
         <p className="mt-4 text-purple-400 animate-pulse uppercase tracking-widest text-sm">
           {selectedIds.length} / 2 Selecionados
@@ -76,13 +83,20 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
                         : "border-slate-900 opacity-40 grayscale"
                   }`}
               >
-                <div className="overflow-hidden w-full aspect-square">
-                  <img
-                    src={char.image}
-                    alt={char.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    style={{ imageRendering: "pixelated" }}
-                  />
+                <div className="overflow-hidden w-full aspect-square flex items-center justify-center bg-slate-900">
+                  {char.id === 0 ? (
+                    /* Símbolo de Interrogação para o Aleatório */
+                    <span className="text-8xl font-black text-purple-600 animate-pulse group-hover:scale-110 transition-transform">
+                      ?
+                    </span>
+                  ) : (
+                    <img
+                      src={char.image}
+                      alt={char.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      style={{ imageRendering: "pixelated" }}
+                    />
+                  )}
                 </div>
 
                 <div className="py-4 text-center w-full bg-slate-900/80">

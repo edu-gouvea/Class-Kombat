@@ -1,27 +1,28 @@
 package Backend.Personagens;
 
-import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import Backend.ENUM.Status;
 import Backend.ENUM.Tipo;
+import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class Korvus extends Lutador{
 
     public Korvus(){
-        super("Korvus", 120, 20, 3, 2, Tipo.MAGOS, Status.NORMAL);
+        super("Korvus", 90,90, 10, 3, 2, Tipo.MAGOS, Status.NORMAL);
+        this.hpMax = hp;
     }
 
     Random r = new Random();
 
-    private int danoPassiva = this.dano / 2;
-    private int hpMax = hp;
+    private final int danoPassiva = this.dano / 2;
+    private final int hpMax;
 
     @Override
     public void mostraInformacoes(){
-        JOptionPane.showMessageDialog(null, "Korvus é um necromante poderoso, especializado em invocar os mortos e manipular a energia sombria. Ele é conhecido por sua sabedoria antiga e habilidades místicas que lhe permitem controlar o destino dos homens.\nKorvus é temido por sua capacidade de trazer mortos à vida e de desencadear temíveis maldições sobre seus inimigos.\n" +
-        "HP: " + this.hp + "\nDano: " + this.dano + "\nVelocidade: " + this.velocidade + "\nForte contra: Combatentes" + "\nFraco contra: Ladinos"   
+        JOptionPane.showMessageDialog(null, """
+                                            Korvus é um necromante poderoso, especializado em invocar os mortos e manipular a energia sombria. Ele é conhecido por sua sabedoria antiga e habilidades místicas que lhe permitem controlar o destino dos homens.
+                                            Korvus é temido por sua capacidade de trazer mortos à vida e de desencadear temíveis maldições sobre seus inimigos.
+                                            HP: """ + this.hp + "\nDano: " + this.dano + "\nVelocidade: " + this.velocidade + "\nForte contra: Combatentes" + "\nFraco contra: Ladinos"   
         );
     }
 
@@ -104,20 +105,23 @@ public class Korvus extends Lutador{
 
     @Override
     public void mostraDetalhesHabilidadePadrao(){
-        JOptionPane.showMessageDialog(null, "O necromante invoca pequenos esqueletos das profundezas da terra. As criaturas avançam rapidamente contra o inimigo e o atacam antes de se desfazerem em pó.\n" + 
-        "Dano: " + this.dano);
+        JOptionPane.showMessageDialog(null, """
+                                            O necromante invoca pequenos esqueletos das profundezas da terra. As criaturas avançam rapidamente contra o inimigo e o atacam antes de se desfazerem em pó.
+                                            Dano: """ + this.dano);
     }
 
     @Override
     public void mostraDetalhesHabilidadeEspecial(){
-        JOptionPane.showMessageDialog(null, "O necromante rasga o véu entre o mundo dos vivos e dos mortos, invocando um colosso cadavérico que emerge do chão e esmaga o oponente com força brutal.\n" +
-        "Dano: " + calculaDanoEspecial() + "\nEspeciais restantes: " + this.especiaisRestantes);
+        JOptionPane.showMessageDialog(null, """
+                                            O necromante rasga o véu entre o mundo dos vivos e dos mortos, invocando um colosso cadavérico que emerge do chão e esmaga o oponente com força brutal.
+                                            Dano: """ + calculaDanoEspecial() + "\nEspeciais restantes: " + this.especiaisRestantes);
     }
 
     @Override
     public void mostraDetalhesHabilidadePassiva(){
-        JOptionPane.showMessageDialog(null, "Uma energia sombria envolve o inimigo enquanto o necromante arranca parte de sua essência vital, absorvendo-a para restaurar a própria vida.\n" +
-        "Dano: " + (danoPassiva) + "\nEfeito: Korvus rouba a vida do oponente para recuperar sua vitalidade");
+        JOptionPane.showMessageDialog(null, """
+                                            Uma energia sombria envolve o inimigo enquanto o necromante arranca parte de sua essência vital, absorvendo-a para restaurar a própria vida.
+                                            Dano: """ + (danoPassiva) + "\nEfeito: Korvus rouba a vida do oponente para recuperar sua vitalidade");
     }
     
 }

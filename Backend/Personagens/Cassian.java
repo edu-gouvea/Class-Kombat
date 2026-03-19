@@ -1,24 +1,24 @@
 package Backend.Personagens;
 
-import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import Backend.ENUM.Status;
 import Backend.ENUM.Tipo;
+import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class Cassian extends Lutador{
 
     public Cassian() {
-        super("Cassian", 130, 20, 3, 1, Tipo.COMBATENTES, Status.NORMAL);
+        super("Cassian", 120,120, 11, 3, 1, Tipo.COMBATENTES, Status.NORMAL);
     }
 
     Random r = new Random();
 
     @Override
     public void mostraInformacoes(){
-        JOptionPane.showMessageDialog(null, "Cassian é um paladino devoto do Deus da Luz, ele é conhecido por sua força e coragem em batalha, além de sua habilidade de curar a si mesmo e aos outros.\nEle é um defensor da justiça e da ordem, e está sempre disposto a lutar contra as forças do mal para proteger os inocentes. Cassian é respeitado por seus aliados e temido por seus inimigos.\n" +
-        "HP: " + this.hp + "\nDano: " + this.dano + "\nVelocidade: " + this.velocidade + "\nForte contra: Ladinos" + "\nFraco contra: Magos"  
+        JOptionPane.showMessageDialog(null, """
+                                            Cassian é um paladino devoto do Deus da Luz, ele é conhecido por sua força e coragem em batalha, alguém de sua habilidade de curar a si mesmo e aos outros.
+                                            Ele é um defensor da justiça e da ordem, e está sempre disposto a lutar contra as forças do mal para proteger os inocentes. Cassian é respeitado por seus aliados e temido por seus inimigos.
+                                            HP: """ + this.hp + "\nDano: " + this.dano + "\nVelocidade: " + this.velocidade + "\nForte contra: Ladinos" + "\nFraco contra: Magos"  
         );
     }
 
@@ -112,20 +112,24 @@ public class Cassian extends Lutador{
 
     @Override
     public void mostraDetalhesHabilidadePadrao(){
-        JOptionPane.showMessageDialog(null, "Com disciplina e precisão, o paladino desfere um golpe firme com sua espada sagrada, canalizando uma pequena parcela de sua fé no ataque.\n" + 
-        "Dano: " + this.dano);
+        JOptionPane.showMessageDialog(null, """
+                                            Com disciplina e precisão, o paladino desfere um golpe firme com sua espada sagrada, canalizando uma pequena parcela de sua fé no ataque.
+                                            Dano: """ + this.dano);
     }
 
     @Override
     public void mostraDetalhesHabilidadeEspecial(){
-        JOptionPane.showMessageDialog(null, "O paladino invoca a luz de sua divindade. Sua espada brilha com uma aura dourada antes de desferir um golpe poderoso que cai sobre o inimigo como um julgamento celestial.\n" +
-        "Dano: " + calculaDanoEspecial() + "\nEspeciais restantes: " + this.especiaisRestantes);
+        JOptionPane.showMessageDialog(null, """
+                                            O paladino invoca a luz de sua divindade. Sua espada brilha com uma aura dourada antes de desferir um golpe poderoso que cai sobre o inimigo como um julgamento celestial.
+                                            Dano: """ + calculaDanoEspecial() + "\nEspeciais restantes: " + this.especiaisRestantes);
     }
 
     @Override
     public void mostraDetalhesHabilidadePassiva(){
-        JOptionPane.showMessageDialog(null, "O paladino ergue sua espada e faz uma breve oração. A luz divina envolve seu corpo, fortalecendo sua armadura e guiando seus próximos ataques.\n" +
-        "Dano: 0\nEfeito: possível aumento de dano para Cassian e redução de dano para o oponente no próximo turno");
+        JOptionPane.showMessageDialog(null, """
+                                            O paladino ergue sua espada e faz uma breve oração. A luz divina envolve seu corpo, fortalecendo sua armadura e guiando seus próximos ataques.
+                                            Dano: 0
+                                            Efeito: possível aumento de dano para Cassian e redução de dano para o oponente no próximo turno""");
     }
     
 }

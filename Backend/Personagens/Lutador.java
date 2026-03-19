@@ -6,19 +6,23 @@ import Backend.ENUM.Tipo;
 public abstract class Lutador {
     
     protected String nome;
-    protected int hp, dano, especiaisRestantes, velocidade, duracaoStatus;
+    protected int hp,hpatual, dano, especiaisRestantes, velocidade, duracaoStatus;
     protected Tipo tipo;
     protected Status status;
 
-    public Lutador(String nome, int hp, int dano, int especiaisRestantes, int velocidade, Tipo tipo, Status status) {
+    public Lutador(String nome, int hp,int hpatual, int dano, int especiaisRestantes, int velocidade, Tipo tipo, Status status) {
         this.nome = nome;
         this.hp = hp;
+        this.hpatual=hpatual;
         this.dano = dano;
         this.tipo = tipo;
         this.status = status;
         this.especiaisRestantes = especiaisRestantes;
         this.velocidade = velocidade;
         this.duracaoStatus = 0;
+    }
+
+    public Lutador() {
     }
 
     public abstract String getNomeAtaqueRapido();
@@ -34,10 +38,10 @@ public abstract class Lutador {
     public abstract void mostraDetalhesHabilidadePassiva();
 
     public void receberDano(int dano){
-        hp -= dano;
+        hpatual -= dano;
 
-        if (hp < 0){
-            hp = 0;
+        if (hpatual < 0){
+            hpatual = 0;
         }
     }
 
@@ -92,6 +96,8 @@ public abstract class Lutador {
         return hp;
     }
 
+    
+
     public int getDano() {
         return dano;
     }
@@ -112,4 +118,43 @@ public abstract class Lutador {
         return velocidade;
     }
 
+    public int getHpatual() {
+        return hpatual;
+    }
+
+    public void setHpatual(int hpatual) {
+        this.hpatual = hpatual;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setDano(int dano) {
+        this.dano = dano;
+    }
+
+    public void setEspeciaisRestantes(int especiaisRestantes) {
+        this.especiaisRestantes = especiaisRestantes;
+    }
+
+    public void setVelocidade(int velocidade) {
+        this.velocidade = velocidade;
+    }
+
+    public void setDuracaoStatus(int duracaoStatus) {
+        this.duracaoStatus = duracaoStatus;
+    }
+
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }

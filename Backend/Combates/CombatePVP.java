@@ -1,9 +1,7 @@
 package Backend.Combates;
 
-import java.util.Random;
-import javax.swing.JOptionPane;
-
 import Backend.Personagens.Lutador;
+import java.util.Random;
 
 public class CombatePVP extends Combate{
 
@@ -11,16 +9,18 @@ public class CombatePVP extends Combate{
 
     @Override
     public void fight(Lutador l1, Lutador l2){
-
-        while(l1.getHp() > 0 && l2.getHp() > 0){
+        boolean res = true;
+        while(res){
+            mostrarStatus(l1, l2);
+            while(estaVivo(l1)==true && estaVivo(l2)==true){
             
             l1.processarStatus();
             l2.processarStatus();
             
-            mostrarStatus(l1, l2);
 
             if (l2.getVelocidade() > l1.getVelocidade()){
                 playerJogaPrimeiro(l2, l1);
+                
             }
             else if (l1.getVelocidade() > l2.getVelocidade()){
                 playerJogaPrimeiro(l1, l2);
@@ -32,17 +32,13 @@ public class CombatePVP extends Combate{
                     playerJogaPrimeiro(l2, l1);
                 }
             }
-
-            
         }
-
-        mostrarStatus(l1, l2);
-
-        if(l1.getHp() > 0){
-            JOptionPane.showMessageDialog(null, l1.getNome() + " venceu!");
-        }else{
-            JOptionPane.showMessageDialog(null, l2.getNome() + " venceu!");
+        res=revanche();
+        if (res==true){
+            resetarStats(l1);
+            resetarStats(l2);
         }
+    }
     }
 
 

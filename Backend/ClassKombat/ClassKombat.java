@@ -1,11 +1,8 @@
 package Backend.ClassKombat;
 
-import java.util.Random;
-
-import javax.swing.JOptionPane;
-
 import Backend.Combates.CombatePVE;
 import Backend.Combates.CombatePVP;
+import Backend.Combates.CombateTorre;
 import Backend.Personagens.Arkanis;
 import Backend.Personagens.Artemis;
 import Backend.Personagens.Cassian;
@@ -13,15 +10,17 @@ import Backend.Personagens.Draven;
 import Backend.Personagens.Korvus;
 import Backend.Personagens.Lutador;
 import Backend.Personagens.Nyxra;
+import java.util.Random;
+import javax.swing.JOptionPane;
 
 public class ClassKombat {
 
-    private Lutador lutadores[] = new Lutador[2];
+    private final Lutador lutadores[] = new Lutador[2];
 
     public void play(){
         menu();
         String escolha = escolheModo();
-        select();
+        select(escolha);
         rodaModo(escolha);
     }
 
@@ -32,38 +31,48 @@ public class ClassKombat {
         }
     }
 
+
     private void rodaModo(String modo){
-        if (modo.equals("1")){
-            new CombatePVP().fight(lutadores[0], lutadores[1]);
-        }else{
-            new CombatePVE().fight(lutadores[0], lutadores[1]);
+        switch (modo) {
+            case "1" -> new CombatePVP().fight(lutadores[0], lutadores[1]);
+            case "2" -> new CombatePVE().fight(lutadores[0], lutadores[1]);
+            default -> new CombateTorre().fighttorre(lutadores[0]);
         }
     }
 
     private String escolheModo(){
         
         while (true){
-            String resposta = JOptionPane.showInputDialog("Qual modo deseja?\n1) PVP\n2) PVE");
+            String resposta = JOptionPane.showInputDialog("Qual modo deseja?\n1) PVP\n2) PVE\n3) Torre");
             
-            if (resposta.equals("1") || resposta.equals("2")){
+            if (resposta.equals("1") || resposta.equals("2") || resposta.equals("3")){
                 return resposta;
             }else{
                 JOptionPane.showMessageDialog(null, "Opção inválida");
-                continue;
             }
         }
 
     }
     
-    private void select(){
+    private void select(String modo){
         int i = 0;
         while(true){
-            if (i > 1) break;
-            String resposta = listaPersonagens(i);
-            if (!listaInformacoes(resposta)) continue;
-            if (!confirma()) continue;
-            instancia(resposta, i);
-            i++;
+            if(modo.equals("1")|| modo.equals("2")){
+                if (i > 1) break;
+                String resposta = listaPersonagens(i);
+                if (!listaInformacoes(resposta)) continue;
+                if (!confirma()) continue;
+                instancia(resposta, i);
+                i++;
+            }
+            else{
+                if (i > 0) break;
+                String resposta = listaPersonagens(i);
+                if (!listaInformacoes(resposta)) continue;
+                if (!confirma()) continue;
+                instancia(resposta, i);
+                i++;
+            }
         }
     }
 
@@ -81,27 +90,16 @@ public class ClassKombat {
     
     private boolean listaInformacoes(String resposta){
         switch (resposta) {
-            case "1":
-                new Arkanis().mostraInformacoes();
-                break;
-            case "2":
-                new Korvus().mostraInformacoes();
-                break;
-            case "3":
-                new Nyxra().mostraInformacoes();
-                break;
-            case "4":
-                new Cassian().mostraInformacoes();
-                break;
-            case "5":
-                new Draven().mostraInformacoes();
-                break;
-            case "6":
-                new Artemis().mostraInformacoes();
-                break;
-            default:
+            case "1" -> new Arkanis().mostraInformacoes();
+            case "2" -> new Korvus().mostraInformacoes();
+            case "3" -> new Nyxra().mostraInformacoes();
+            case "4" -> new Cassian().mostraInformacoes();
+            case "5" -> new Draven().mostraInformacoes();
+            case "6" -> new Artemis().mostraInformacoes();
+            default -> {
                 JOptionPane.showMessageDialog(null, "Opção inválida");
                 return false;
+            }
         }
         return true;
     }
@@ -109,13 +107,17 @@ public class ClassKombat {
     private boolean confirma(){
         String resposta = JOptionPane.showInputDialog("Confirmar selecão?\n1) Sim\n2) Não");
 
-        if (resposta.equals("1")){
-            return true;
-        }else if (resposta.equals("2")){
-            return false;
-        }else{
-            JOptionPane.showMessageDialog(null, "Opção inválida");
-            return false;
+        switch (resposta) {
+            case "1" -> {
+                return true;
+            }
+            case "2" -> {
+                return false;
+            }
+            default -> {
+                JOptionPane.showMessageDialog(null, "Opção inválida");
+                return false;
+            }
         }
     }
 

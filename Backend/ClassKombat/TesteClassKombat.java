@@ -1,5 +1,4 @@
 package Backend.ClassKombat;
-
 public class TesteClassKombat {
     public static void main(String[] args) {
         

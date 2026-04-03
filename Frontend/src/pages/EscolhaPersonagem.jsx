@@ -1,21 +1,14 @@
 import React, { useState } from "react";
 
-// Importação das imagens
-import imgKorvus from "../assets/korvus.jpeg";
-import imgArkanis from "../assets/arkanis.jpeg";
-import imgCassian from "../assets/cassian.jpeg";
-import imgNyxra from "../assets/nyxra.jpeg";
-import imgDraaven from "../assets/draven.jpeg";
-import imgArtemis from "../assets/artemis.jpeg";
-
+// Agora as imagens são referenciadas por caminhos de string (URL relativa)
 const characters = [
   { id: 0, name: "Random", class: "? ? ?", image: null },
-  { id: 1, name: "Korvus", class: "Necromante", image: imgKorvus },
-  { id: 2, name: "Arkanis", class: "Elemental", image: imgArkanis },
-  { id: 3, name: "Cassian", class: "Paladino", image: imgCassian },
-  { id: 4, name: "Nyxra", class: "Werewolf", image: imgNyxra },
-  { id: 5, name: "Draaven", class: "Vampiro", image: imgDraaven },
-  { id: 6, name: "Artemis", class: "Huntress", image: imgArtemis },
+  { id: 1, name: "Korvus", class: "Necromante", image: "/korvus.jpeg" },
+  { id: 2, name: "Arkanis", class: "Elemental", image: "/arkanis.jpeg" },
+  { id: 3, name: "Cassian", class: "Paladino", image: "/cassian.jpeg" },
+  { id: 4, name: "Nyxra", class: "Werewolf", image: "/nyxra.jpeg" },
+  { id: 5, name: "Draaven", class: "Vampiro", image: "/draven.jpeg" },
+  { id: 6, name: "Artemis", class: "Huntress", image: "/artemis.jpeg" },
 ];
 
 const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
@@ -147,8 +140,7 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
       </div>
 
       {/* Efeitos de Scanlines e Flicker */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-20 select-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,0,0.06))] bg-[length:100%_4px,3px_100%]"></div>
-      <div className="fixed inset-0 pointer-events-none z-40 animate-[pulse_10s_infinite] bg-white/5 opacity-5"></div>
+      <div className="fixed inset-0 pointer-events-none z-50 opacity-20 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,0,0.06))] bg-[length:100%_4px,3px_100%]"></div>
     </div>
   );
 };

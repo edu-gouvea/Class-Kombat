@@ -4,6 +4,9 @@ import EscolhaModo from "./pages/EscolhaModo";
 import EscolhaPersonagem from "./pages/EscolhaPersonagem";
 import EscolhaArena from "./pages/EscolhaArena";
 
+// 🔥 API
+import { iniciarJogo } from "./services/api";
+
 // Imports das Arenas
 import ArenaArtemis from "./pages/ArenaArtemis";
 import ArenaDraven from "./pages/ArenaDraven";
@@ -14,10 +17,12 @@ import ArenaKorvus from "./pages/ArenaKorvus";
 
 function App() {
   const [tela, setTela] = useState("inicial");
+
   const [configJogo, setConfigJogo] = useState({
     modo: null,
     herois: [],
     arena: null,
+    estadoJogo: null, // 🔥 NOVO
   });
 
   const navegar = (proxima) => setTela(proxima);
@@ -27,13 +32,38 @@ function App() {
     navegar("personagem");
   };
 
-  const confirmarPersonagem = (herois) => {
-    setConfigJogo((p) => ({ ...p, herois }));
+  // 🔥 AQUI INTEGRA COM BACKEND
+  const confirmarPersonagem = async (herois) => {
+    const p1 = herois[0].nome.toLowerCase();
+
+    // 👇 inimigo aleatório
+    const personagens = [
+      "artemis",
+      "draven",
+      "nyxra",
+      "cassian",
+      "arkanis",
+      "korvus",
+    ];
+
+    const p2 = personagens[Math.floor(Math.random() * personagens.length)];
+
+    // 🔥 CHAMA BACKEND
+    const estado = await iniciarJogo(p1, p2);
+
+    console.log("Estado inicial:", estado);
+
+    setConfigJogo((p) => ({
+      ...p,
+      herois,
+      estadoJogo: estado,
+    }));
+
     navegar("arena");
   };
 
   const confirmarArena = (arena) => {
-    console.log("Arena selecionada:", arena); // DEBUG
+    console.log("Arena selecionada:", arena);
     setConfigJogo((p) => ({ ...p, arena }));
     navegar("jogo");
   };
@@ -46,13 +76,12 @@ function App() {
   };
 
   const renderizarJogo = () => {
-    // 🔥 FORÇA número (resolve bug de string)
     const id = Number(configJogo.arena?.id);
-
-    console.log("ID da arena:", id);
 
     const gameProps = {
       player: configJogo.herois[0],
+      estadoJogo: configJogo.estadoJogo, // 🔥 PASSANDO ESTADO
+      setConfigJogo,
       onSair: () => setTela("inicial"),
     };
 

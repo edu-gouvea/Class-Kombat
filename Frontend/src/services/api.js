@@ -1,4 +1,4 @@
-const BASE = "";
+const BASE = "http://localhost:3001";
 
 // POST /iniciar  —  body: "p1nome,p2nome"
 export async function iniciarJogo(p1, p2) {

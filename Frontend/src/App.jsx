@@ -12,15 +12,15 @@ import ArenaCassian from "./pages/ArenaCassian";
 import ArenaArkanis from "./pages/ArenaArkanis";
 import ArenaKorvus from "./pages/ArenaKorvus";
 
-// Mapa arena → nome do personagem inimigo no backend
-const ARENA_PARA_INIMIGO = {
-  1: "artemis",
-  2: "draven",
-  3: "nyxra",
-  4: "cassian",
-  5: "arkanis",
-  6: "korvus",
-};
+// Lista de todos os personagens disponíveis (para sorteio quando necessário)
+const TODOS_PERSONAGENS = [
+  "arkanis",
+  "artemis",
+  "cassian",
+  "draven",
+  "korvus",
+  "nyxra",
+];
 
 function App() {
   const [tela, setTela] = useState("inicial");
@@ -48,8 +48,12 @@ function App() {
   const confirmarArena = async (arena) => {
     const p1Nome = configJogo.herois[0]?.name?.toLowerCase() ?? "arkanis";
 
-    // Inimigo é determinado pela arena escolhida
-    const p2Nome = ARENA_PARA_INIMIGO[arena.id] ?? "draven";
+    // P2 é o segundo personagem escolhido pelo jogador; se não escolheu, sorteia
+    let p2Nome = configJogo.herois[1]?.name?.toLowerCase();
+    if (!p2Nome) {
+      const opcoes = TODOS_PERSONAGENS.filter((n) => n !== p1Nome);
+      p2Nome = opcoes[Math.floor(Math.random() * opcoes.length)];
+    }
 
     const estado = await iniciarJogo(p1Nome, p2Nome);
     console.log("Estado inicial:", estado);
@@ -59,29 +63,35 @@ function App() {
   };
 
   const voltar = () => {
-    if (tela === "modo")       navegar("inicial");
+    if (tela === "modo") navegar("inicial");
     if (tela === "personagem") navegar("modo");
-    if (tela === "arena")      navegar("personagem");
-    if (tela === "jogo")       navegar("arena");
+    if (tela === "arena") navegar("personagem");
+    if (tela === "jogo") navegar("arena");
   };
 
   const renderizarJogo = () => {
     const id = Number(configJogo.arena?.id);
 
     const gameProps = {
-      player:       configJogo.herois[0],
-      estadoJogo:   configJogo.estadoJogo,
+      player: configJogo.herois[0],
+      estadoJogo: configJogo.estadoJogo,
       setConfigJogo,
-      onSair:       () => setTela("inicial"),
+      onSair: () => setTela("inicial"),
     };
 
     switch (id) {
-      case 1: return <ArenaArtemis {...gameProps} />;
-      case 2: return <ArenaDraven  {...gameProps} />;
-      case 3: return <ArenaNyxra   {...gameProps} />;
-      case 4: return <ArenaCassian {...gameProps} />;
-      case 5: return <ArenaArkanis {...gameProps} />;
-      case 6: return <ArenaKorvus  {...gameProps} />;
+      case 1:
+        return <ArenaArtemis {...gameProps} />;
+      case 2:
+        return <ArenaDraven {...gameProps} />;
+      case 3:
+        return <ArenaNyxra {...gameProps} />;
+      case 4:
+        return <ArenaCassian {...gameProps} />;
+      case 5:
+        return <ArenaArkanis {...gameProps} />;
+      case 6:
+        return <ArenaKorvus {...gameProps} />;
       default:
         return (
           <div className="flex flex-col items-center justify-center h-screen text-white bg-black">
@@ -99,19 +109,22 @@ function App() {
 
   return (
     <div className="bg-slate-950 min-h-screen selection:bg-yellow-500 selection:text-black">
-      {tela === "inicial"    && <TelaInicial aoEntrar={() => navegar("modo")} />}
-      {tela === "modo"       && <EscolhaModo onSelecionarModo={selecionarModo} onVoltar={voltar} />}
-      {tela === "personagem" && <EscolhaPersonagem onConfirmar={confirmarPersonagem} onVoltar={voltar} />}
-      {tela === "arena"      && <EscolhaArena onConfirmar={confirmarArena} onVoltar={voltar} />}
-      {tela === "jogo"       && (
+      {tela === "inicial" && <TelaInicial aoEntrar={() => navegar("modo")} />}
+      {tela === "modo" && (
+        <EscolhaModo onSelecionarModo={selecionarModo} onVoltar={voltar} />
+      )}
+      {tela === "personagem" && (
+        <EscolhaPersonagem
+          onConfirmar={confirmarPersonagem}
+          onVoltar={voltar}
+        />
+      )}
+      {tela === "arena" && (
+        <EscolhaArena onConfirmar={confirmarArena} onVoltar={voltar} />
+      )}
+      {tela === "jogo" && (
         <div className="relative w-full h-full animate-in fade-in duration-700">
           {renderizarJogo()}
-          <button
-            onClick={() => setTela("inicial")}
-            className="fixed top-4 right-4 z-50 bg-red-600 text-white px-3 py-1 text-[10px] font-black border-2 border-black shadow-[4px_4px_0px_#000] hover:bg-red-500 transition-all uppercase"
-          >
-            Sair da Luta
-          </button>
         </div>
       )}
     </div>

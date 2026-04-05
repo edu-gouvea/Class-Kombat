@@ -46,19 +46,32 @@ public class Jogo {
         int hpAtacanteAntes = atacante.getHpatual();
 
         switch (acao) {
-            case ATAQUE_RAPIDO   -> atacante.habilidadePadrao(defensor);
-            case ATAQUE_ESPECIAL -> atacante.habilidadeEspecial(defensor);
-            case ATAQUE_PASSIVA  -> atacante.habilidadePassiva(defensor);
+            case ATAQUE_RAPIDO:
+                atacante.habilidadePadrao(defensor);
+                break;
+            case ATAQUE_ESPECIAL:
+                atacante.habilidadeEspecial(defensor);
+                break;
+            case ATAQUE_PASSIVA:
+                atacante.habilidadePassiva(defensor);
+                break;
         }
 
         int danoCausado  = hpDefAntes - defensor.getHpatual();
         int curaRecebida = atacante.getHpatual() - hpAtacanteAntes;
 
-        String nomeAtaque = switch (acao) {
-            case ATAQUE_RAPIDO   -> atacante.getNomeAtaqueRapido();
-            case ATAQUE_ESPECIAL -> atacante.getNomeAtaqueEspecial();
-            case ATAQUE_PASSIVA  -> atacante.getNomeAtaquePassiva();
-        };
+        String nomeAtaque;
+        switch (acao) {
+            case ATAQUE_RAPIDO:
+                nomeAtaque = atacante.getNomeAtaqueRapido();
+                break;
+            case ATAQUE_ESPECIAL:
+                nomeAtaque = atacante.getNomeAtaqueEspecial();
+                break;
+            default:
+                nomeAtaque = atacante.getNomeAtaquePassiva();
+                break;
+        }
 
         StringBuilder msg = new StringBuilder();
         if (danoCausado > 0) {

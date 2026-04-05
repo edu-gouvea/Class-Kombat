@@ -13,7 +13,7 @@ public abstract class Combate{
 
         while (true){
             String resposta = JOptionPane.showInputDialog(
-            l.getNome() + " escolha ação:\n1) " + l.getNomeAtaqueRapido() + "\n2) " + l.getNomeAtaqueEspecial() + "\n3) " + l.getNomeAtaquePassiva());
+            l.getNome() + " escolha acao: 1) " + l.getNomeAtaqueRapido() + " 2) " + l.getNomeAtaqueEspecial() + " 3) " + l.getNomeAtaquePassiva());
 
             if(resposta.equals("1")){
                 l.mostraDetalhesHabilidadePadrao();
@@ -34,51 +34,52 @@ public abstract class Combate{
     }
     public boolean revanche(){
 
-        String resposta = JOptionPane.showInputDialog("Deseja uma Revanche?\n1) Sim\n2) Não");
+        String resposta = JOptionPane.showInputDialog("Deseja uma Revanche? 1) Sim 2) Nao");
 
         switch (resposta) {
-            case "1" -> {
+            case "1":
                 return true;
-            }
-            case "2" -> {
+            case "2":
                 return false;
-            }
-            default -> {
-                JOptionPane.showMessageDialog(null, "Opção inválida");
+            default:
+                JOptionPane.showMessageDialog(null, "Opcao invalida");
                 return false;
-            }
         }
 
     }
     
     public boolean confirma(){
 
-        String resposta = JOptionPane.showInputDialog("Confirmar selecão?\n1) Sim\n2) Não");
+        String resposta = JOptionPane.showInputDialog("Confirmar selecao? 1) Sim 2) Nao");
 
         switch (resposta) {
-            case "1" -> {
+            case "1":
                 return true;
-            }
-            case "2" -> {
+            case "2":
                 return false;
-            }
-            default -> {
-                JOptionPane.showMessageDialog(null, "Opção inválida");
+            default:
+                JOptionPane.showMessageDialog(null, "Opcao invalida");
                 return false;
-            }
         }
 
     }
 
     public void executar(Lutador atacante, Lutador defensor, Acao acao){
 
-        if(null == acao){
+        if(acao == null){
             atacante.habilidadePassiva(defensor);
-        }
-        else switch (acao) {
-            case ATAQUE_RAPIDO -> atacante.habilidadePadrao(defensor);
-            case ATAQUE_ESPECIAL -> atacante.habilidadeEspecial(defensor);
-            default -> atacante.habilidadePassiva(defensor);
+        } else {
+            switch (acao) {
+                case ATAQUE_RAPIDO:
+                    atacante.habilidadePadrao(defensor);
+                    break;
+                case ATAQUE_ESPECIAL:
+                    atacante.habilidadeEspecial(defensor);
+                    break;
+                default:
+                    atacante.habilidadePassiva(defensor);
+                    break;
+            }
         }
 
     }

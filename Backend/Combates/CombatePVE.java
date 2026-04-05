@@ -91,7 +91,7 @@ public class CombatePVE extends Combate{
 
     private Acao botEscolherAcao(){
 
-        int bot = r.nextInt(1, 4);
+        int bot = r.nextInt(3) + 1;
 
         if (bot == 1){
             return Acao.ATAQUE_RAPIDO;

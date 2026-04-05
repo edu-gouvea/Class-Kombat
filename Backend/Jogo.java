@@ -1,5 +1,7 @@
 package Backend;
 
+import Backend.ENUM.Acao;
+import Backend.ENUM.Status;
 import Backend.Personagens.Lutador;
 
 public class Jogo {
@@ -12,28 +14,121 @@ public class Jogo {
         p2 = FactoryPersonagem.criar(nome2);
     }
 
-    public static String atacar() {
+    public static String atacar(String acaoStr) {
+        StringBuilder log = new StringBuilder();
 
-        p1.habilidadePadrao(p2);
+        // Processar status de início de turno
+        p1.processarStatus();
+        p2.processarStatus();
 
-        // turno inimigo (simples)
-        if (p2.getHpatual() > 0) {
-            p2.habilidadePadrao(p1);
+        // Turno do player
+        if (!Status.isCongelado(p1.getStatus())) {
+            Acao acao = parseAcao(acaoStr);
+            log.append(executarAcao(p1, p2, acao));
+        } else {
+            log.append(p1.getNome()).append(" está congelado e perdeu o turno! ");
         }
 
-        return getEstado();
+        // Turno do bot (só age se ainda estiver vivo)
+        if (p2.getHpatual() > 0) {
+            if (!Status.isCongelado(p2.getStatus())) {
+                log.append(executarAcao(p2, p1, botEscolherAcao()));
+            } else {
+                log.append(p2.getNome()).append(" está congelado e perdeu o turno! ");
+            }
+        }
+
+        return getEstado(log.toString());
     }
 
-    public static String getEstado() {
+    private static String executarAcao(Lutador atacante, Lutador defensor, Acao acao) {
+        int hpDefAntes      = defensor.getHpatual();
+        int hpAtacanteAntes = atacante.getHpatual();
+
+        switch (acao) {
+            case ATAQUE_RAPIDO   -> atacante.habilidadePadrao(defensor);
+            case ATAQUE_ESPECIAL -> atacante.habilidadeEspecial(defensor);
+            case ATAQUE_PASSIVA  -> atacante.habilidadePassiva(defensor);
+        }
+
+        int danoCausado  = hpDefAntes - defensor.getHpatual();
+        int curaRecebida = atacante.getHpatual() - hpAtacanteAntes;
+
+        String nomeAtaque = switch (acao) {
+            case ATAQUE_RAPIDO   -> atacante.getNomeAtaqueRapido();
+            case ATAQUE_ESPECIAL -> atacante.getNomeAtaqueEspecial();
+            case ATAQUE_PASSIVA  -> atacante.getNomeAtaquePassiva();
+        };
+
+        StringBuilder msg = new StringBuilder();
+        if (danoCausado > 0) {
+            msg.append(atacante.getNome()).append(" usou ").append(nomeAtaque)
+               .append(" e causou ").append(danoCausado).append(" de dano em ")
+               .append(defensor.getNome()).append(". ");
+        } else {
+            msg.append(atacante.getNome()).append(" usou ").append(nomeAtaque).append(". ");
+        }
+        if (curaRecebida > 0) {
+            msg.append(atacante.getNome()).append(" recuperou ")
+               .append(curaRecebida).append(" HP. ");
+        }
+
+        return msg.toString();
+    }
+
+    private static Acao botEscolherAcao() {
+        return Acao.values()[(int)(Math.random() * 3)];
+    }
+
+    private static Acao parseAcao(String s) {
+        try {
+            return Acao.valueOf(s.toUpperCase());
+        } catch (Exception e) {
+            return Acao.ATAQUE_RAPIDO; // fallback se vier algo inesperado
+        }
+    }
+
+    public static String getEstado(String log) {
+        boolean combateAtivo = p1.getHpatual() > 0 && p2.getHpatual() > 0;
+        String vencedor = "";
+        if (!combateAtivo) {
+            vencedor = p1.getHpatual() > 0 ? p1.getNome() : p2.getNome();
+        }
+
+        // Escapa caracteres que quebrariam o JSON
+        String logSeguro = log.replace("\\", "\\\\")
+                              .replace("\"", "'")
+                              .replace("\n", " ")
+                              .replace("\r", "");
+
         return "{"
-                + "\"p1\":{"
-                + "\"nome\":\"" + p1.getNome() + "\","
-                + "\"hp\":" + p1.getHpatual()
-                + "},"
-                + "\"p2\":{"
-                + "\"nome\":\"" + p2.getNome() + "\","
-                + "\"hp\":" + p2.getHpatual()
+            + "\"combateAtivo\":"  + combateAtivo + ","
+            + "\"vencedor\":\""    + vencedor + "\","
+            + "\"log\":\""         + logSeguro + "\","
+            + "\"p1\":{"
+                + "\"nome\":\""              + p1.getNome()              + "\","
+                + "\"hp\":"                  + p1.getHp()                + ","
+                + "\"hpAtual\":"             + p1.getHpatual()           + ","
+                + "\"status\":\""            + p1.getStatus().name()     + "\","
+                + "\"especiaisRestantes\":"  + p1.getEspeciasRestantes() + ","
+                + "\"ataques\":{"
+                    + "\"rapido\":\""  + p1.getNomeAtaqueRapido()  + "\","
+                    + "\"especial\":\"" + p1.getNomeAtaqueEspecial() + "\","
+                    + "\"passiva\":\""  + p1.getNomeAtaquePassiva()  + "\""
                 + "}"
-                + "}";
+            + "},"
+            + "\"p2\":{"
+                + "\"nome\":\""              + p2.getNome()              + "\","
+                + "\"hp\":"                  + p2.getHp()                + ","
+                + "\"hpAtual\":"             + p2.getHpatual()           + ","
+                + "\"status\":\""            + p2.getStatus().name()     + "\","
+                + "\"especiaisRestantes\":"  + p2.getEspeciasRestantes() + ","
+                + "\"ataques\":{"
+                    + "\"rapido\":\""   + p2.getNomeAtaqueRapido()  + "\","
+                    + "\"especial\":\"" + p2.getNomeAtaqueEspecial() + "\","
+                    + "\"passiva\":\""  + p2.getNomeAtaquePassiva()  + "\""
+                + "}"
+            + "}"
+        + "}";
     }
 }

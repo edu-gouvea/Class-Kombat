@@ -7,7 +7,7 @@ const characters = [
   { id: 2, name: "Arkanis", class: "Elemental", image: "/arkanis.jpeg" },
   { id: 3, name: "Cassian", class: "Paladino", image: "/cassian.jpeg" },
   { id: 4, name: "Nyxra", class: "Werewolf", image: "/nyxra.jpeg" },
-  { id: 5, name: "Draaven", class: "Vampiro", image: "/draven.jpeg" },
+  { id: 5, name: "Draven", class: "Vampiro", image: "/draven.jpeg" },
   { id: 6, name: "Artemis", class: "Huntress", image: "/artemis.jpeg" },
 ];
 

@@ -53,11 +53,11 @@ public abstract class Lutador {
     public void processarStatus(){
 
     if(status == Status.SANGRAMENTO){
-        hp -= 5;
+        this.receberDano(5);
         System.out.println(nome + " sofreu 5 de dano por sangramento");
     }
     if (status == Status.ENVENENAMENTO){
-        hp -= 7;
+        this.receberDano(7);
         System.out.println(nome + " sofreu 7 de dano por envenenamento");
     }
     if (status == Status.DANO_REDUZIDO){

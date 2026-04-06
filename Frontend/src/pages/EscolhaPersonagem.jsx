@@ -13,7 +13,7 @@ const characters = [
 
 const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
   // PVP permite 2 personagens; PVE e Torre apenas 1
-  const maxSlots = modo === "pvp" ? 2 : 1;
+  const maxSlots = (modo === "pvp" || modo === "pve") ? 2 : 1;
   const [selectedIds, setSelectedIds] = useState([]);
 
   const togglePersonagem = (id) => {

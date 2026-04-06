@@ -37,17 +37,11 @@ const getAvatar = (nome) => AVATAR[nome?.toLowerCase()] ?? null;
 
 // ── BANNER DE ROUND ────────────────────────────────────────────────────────
 const RoundBanner = ({ roundNum, isFinal, onDone }) => {
-  // fase: "round" → mostra "ROUND X" / "FINAL ROUND"
-  //       "fight" → mostra "LUTE!"
-  //       "saindo" → fade out
   const [fase, setFase] = useState("round");
 
   useEffect(() => {
-    // 1s mostrando o round
     const t1 = setTimeout(() => setFase("fight"), 1000);
-    // mais 800ms mostrando LUTE!
     const t2 = setTimeout(() => setFase("saindo"), 1800);
-    // mais 400ms de fade → chama onDone
     const t3 = setTimeout(() => onDone(), 2200);
     return () => {
       clearTimeout(t1);
@@ -74,7 +68,6 @@ const RoundBanner = ({ roundNum, isFinal, onDone }) => {
         pointerEvents: "none",
       }}
     >
-      {/* Linha decorativa topo */}
       <div
         style={{
           width: "60%",
@@ -84,8 +77,6 @@ const RoundBanner = ({ roundNum, isFinal, onDone }) => {
           marginBottom: 18,
         }}
       />
-
-      {/* Texto principal */}
       <div
         style={{
           fontSize: fase === "round" ? 72 : 88,
@@ -111,8 +102,6 @@ const RoundBanner = ({ roundNum, isFinal, onDone }) => {
             ? "FINAL ROUND"
             : `ROUND ${roundNum}`}
       </div>
-
-      {/* Linha decorativa baixo */}
       <div
         style={{
           width: "60%",
@@ -125,6 +114,68 @@ const RoundBanner = ({ roundNum, isFinal, onDone }) => {
     </div>
   );
 };
+
+// ── Sub-componentes dos botões retrô ───────────────────────────────────────
+const Scanlines = () => (
+  <div
+    style={{
+      position: "absolute",
+      inset: 0,
+      pointerEvents: "none",
+      background:
+        "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)",
+    }}
+  />
+);
+
+const Corners = () => (
+  <>
+    <div
+      style={{
+        position: "absolute",
+        top: -2,
+        left: -2,
+        width: 6,
+        height: 6,
+        borderTop: "2px solid #4b5563",
+        borderLeft: "2px solid #4b5563",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        top: -2,
+        right: -2,
+        width: 6,
+        height: 6,
+        borderTop: "2px solid #4b5563",
+        borderRight: "2px solid #4b5563",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        bottom: -2,
+        left: -2,
+        width: 6,
+        height: 6,
+        borderBottom: "2px solid #4b5563",
+        borderLeft: "2px solid #4b5563",
+      }}
+    />
+    <div
+      style={{
+        position: "absolute",
+        bottom: -2,
+        right: -2,
+        width: 6,
+        height: 6,
+        borderBottom: "2px solid #4b5563",
+        borderRight: "2px solid #4b5563",
+      }}
+    />
+  </>
+);
 
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -142,15 +193,12 @@ const ArenaBase = ({
   const [carregando, setCarregando] = useState(false);
   const [fasePvp, setFasePvp] = useState("p1");
   const [acaoP1, setAcaoP1] = useState(null);
-
-  // Controle do banner de round
   const [mostrarBanner, setMostrarBanner] = useState(false);
-  const [bannerKey, setBannerKey] = useState(0); // força re-mount ao trocar de round
+  const [bannerKey, setBannerKey] = useState(0);
 
   const isPvp = modo === "pvp";
   const isTorre = modo === "torre";
 
-  // Exibe o banner sempre que o estadoInicial mudar (novo round na torre)
   useEffect(() => {
     if (estadoInicial) {
       setEstado(estadoInicial);
@@ -184,7 +232,6 @@ const ArenaBase = ({
 
   const { p1, p2, combateAtivo, vencedor } = estado;
 
-  // ── Ataque ────────────────────────────────────────────────────────────────
   const handleAtacar = async (acao) => {
     if (!combateAtivo || carregando) return;
 
@@ -235,8 +282,6 @@ const ArenaBase = ({
   const playerVenceu = vencedor === p1.nome;
   const torreAcabou =
     isTorre && torreInfo && torreInfo.index >= torreInfo.sequencia.length - 1;
-
-  // Número do round atual (1-based) e se é o último
   const roundNum = isTorre ? torreInfo.index + 1 : 1;
   const isFinalRound =
     isTorre && torreInfo && torreInfo.index === torreInfo.sequencia.length - 1;
@@ -244,6 +289,52 @@ const ArenaBase = ({
   const bannerColor = fasePvp === "p1" ? "#eab308" : "#ef4444";
   const bannerBg =
     fasePvp === "p1" ? "rgba(120,80,0,0.35)" : "rgba(120,0,0,0.35)";
+
+  const atkDisabled = (extra = false) => !combateAtivo || carregando || extra;
+  const atkStyle = (disabled) => ({
+    position: "relative",
+    background: disabled ? "#06060a" : "#0a0a12",
+    border: `2px solid ${disabled ? "#111120" : "#1f1f3a"}`,
+    borderBottom: `5px solid ${disabled ? "#08080e" : "#111120"}`,
+    padding: "14px 10px 18px",
+    cursor: disabled ? "not-allowed" : "pointer",
+    textAlign: "left",
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+    opacity: disabled ? 0.35 : 1,
+    fontFamily: "'Press Start 2P', monospace",
+    overflow: "hidden",
+    transition: "transform 0.08s, border-bottom-width 0.08s",
+  });
+
+  const typeLabel = {
+    fontSize: 8,
+    letterSpacing: 3,
+    textTransform: "uppercase",
+    color: "#374151",
+    borderBottom: "1px solid #1f1f3a",
+    paddingBottom: 6,
+    width: "100%",
+  };
+
+  const nameLabel = {
+    fontSize: 13,
+    color: "#e5e7eb",
+    lineHeight: 1.7,
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+  };
+
+  const keyStyle = {
+    fontSize: 8,
+    color: "#1f1f3a",
+    background: "#111120",
+    border: "1px solid #1f1f3a",
+    padding: "3px 6px",
+    letterSpacing: 1,
+    fontFamily: "'Press Start 2P', monospace",
+  };
 
   return (
     <div
@@ -605,7 +696,6 @@ const ArenaBase = ({
             }}
           />
         )}
-
         {spriteFront && (
           <img
             src={spriteFront}
@@ -645,7 +735,6 @@ const ArenaBase = ({
             background: "rgba(0,0,0,0.90)",
           }}
         >
-          {/* Torre: campeão */}
           {isTorre && playerVenceu && torreAcabou && (
             <>
               <div
@@ -684,8 +773,6 @@ const ArenaBase = ({
               </button>
             </>
           )}
-
-          {/* Torre: próxima luta */}
           {isTorre && playerVenceu && !torreAcabou && (
             <>
               <div
@@ -728,8 +815,6 @@ const ArenaBase = ({
               </button>
             </>
           )}
-
-          {/* Torre: derrota */}
           {isTorre && !playerVenceu && (
             <>
               <div
@@ -768,8 +853,6 @@ const ArenaBase = ({
               </button>
             </>
           )}
-
-          {/* PVE / PVP normal */}
           {!isTorre && (
             <>
               <h2
@@ -803,16 +886,24 @@ const ArenaBase = ({
       <div style={{ position: "relative", zIndex: 10, margin: "0 12px 6px" }}>
         <div
           style={{
-            background: "rgba(0,0,0,0.88)",
-            border: "2px solid #4b5563",
-            padding: "6px 12px",
+            background: "rgba(6,6,10,0.95)",
+            borderLeft: "4px solid #eab308",
+            border: "2px solid #1f1f3a",
+            padding: "8px 14px",
             minHeight: 44,
           }}
         >
           <p
-            style={{ color: "white", fontSize: 13, lineHeight: 1.5, margin: 0 }}
+            style={{
+              color: carregando ? "#6b7280" : "#d1d5db",
+              fontSize: 10,
+              lineHeight: 1.8,
+              margin: 0,
+              letterSpacing: 1,
+              fontFamily: "'Press Start 2P', monospace",
+            }}
           >
-            {carregando ? "⚔️ Executando..." : log}
+            {carregando ? "EXECUTANDO..." : log}
           </p>
         </div>
       </div>
@@ -828,85 +919,91 @@ const ArenaBase = ({
           padding: "0 12px 12px",
         }}
       >
+        {/* ATAQUE RAPIDO */}
         <button
           onClick={() => handleAtacar("ATAQUE_RAPIDO")}
-          disabled={!combateAtivo || carregando}
-          style={estiloAcao("#1d4ed8", "#1e3a8a", !combateAtivo || carregando)}
+          disabled={atkDisabled()}
+          style={atkStyle(atkDisabled())}
         >
-          <span style={{ fontSize: 22 }}>⚡</span>
-          <span style={{ fontSize: 10, color: "#93c5fd", fontWeight: 600 }}>
-            Ataque Rápido
-          </span>
-          <span
+          <Scanlines />
+          <Corners />
+          <div style={typeLabel}>Rapido</div>
+          <div style={nameLabel}>{lutadorAtual.ataques?.rapido ?? "---"}</div>
+          <div
             style={{
-              fontSize: 12,
-              fontWeight: 900,
-              textTransform: "uppercase",
-              textAlign: "center",
-              lineHeight: 1.2,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              width: "100%",
+              marginTop: 4,
             }}
           >
-            {lutadorAtual.ataques?.rapido ?? "—"}
-          </span>
+            <span style={{ fontSize: 8, color: "#6b7280", letterSpacing: 1 }}>
+              --
+            </span>
+            <span style={keyStyle}>Q</span>
+          </div>
         </button>
 
+        {/* ATAQUE ESPECIAL */}
         <button
           onClick={() => handleAtacar("ATAQUE_ESPECIAL")}
-          disabled={
-            !combateAtivo || carregando || lutadorAtual.especiaisRestantes <= 0
-          }
-          style={estiloAcao(
-            "#7e22ce",
-            "#581c87",
-            !combateAtivo || carregando || lutadorAtual.especiaisRestantes <= 0,
-          )}
+          disabled={atkDisabled(lutadorAtual.especiaisRestantes <= 0)}
+          style={atkStyle(atkDisabled(lutadorAtual.especiaisRestantes <= 0))}
         >
-          <span style={{ fontSize: 22 }}>🔥</span>
-          <span
+          <Scanlines />
+          <Corners />
+          <div style={typeLabel}>Especial</div>
+          <div style={nameLabel}>{lutadorAtual.ataques?.especial ?? "---"}</div>
+          <div
             style={{
-              fontSize: 10,
-              color:
-                lutadorAtual.especiaisRestantes > 0 ? "#c4b5fd" : "#fca5a5",
-              fontWeight: 600,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              width: "100%",
+              marginTop: 4,
             }}
           >
-            {lutadorAtual.especiaisRestantes > 0
-              ? `Especial (${lutadorAtual.especiaisRestantes}x)`
-              : "Esgotado"}
-          </span>
-          <span
-            style={{
-              fontSize: 12,
-              fontWeight: 900,
-              textTransform: "uppercase",
-              textAlign: "center",
-              lineHeight: 1.2,
-            }}
-          >
-            {lutadorAtual.ataques?.especial ?? "—"}
-          </span>
+            <span
+              style={{
+                fontSize: 8,
+                color:
+                  lutadorAtual.especiaisRestantes > 0 ? "#6b7280" : "#374151",
+                letterSpacing: 1,
+              }}
+            >
+              {lutadorAtual.especiaisRestantes > 0
+                ? `${lutadorAtual.especiaisRestantes}x`
+                : "ESGOTADO"}
+            </span>
+            <span style={keyStyle}>W</span>
+          </div>
         </button>
 
+        {/* PASSIVA */}
         <button
           onClick={() => handleAtacar("ATAQUE_PASSIVA")}
-          disabled={!combateAtivo || carregando}
-          style={estiloAcao("#065f46", "#064e3b", !combateAtivo || carregando)}
+          disabled={atkDisabled()}
+          style={atkStyle(atkDisabled())}
         >
-          <span style={{ fontSize: 22 }}>🌀</span>
-          <span style={{ fontSize: 10, color: "#6ee7b7", fontWeight: 600 }}>
-            Passiva
-          </span>
-          <span
+          <Scanlines />
+          <Corners />
+          <div style={typeLabel}>Passiva</div>
+          <div style={nameLabel}>{lutadorAtual.ataques?.passiva ?? "---"}</div>
+          <div
             style={{
-              fontSize: 12,
-              fontWeight: 900,
-              textTransform: "uppercase",
-              textAlign: "center",
-              lineHeight: 1.2,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              width: "100%",
+              marginTop: 4,
             }}
           >
-            {lutadorAtual.ataques?.passiva ?? "—"}
-          </span>
+            <span style={{ fontSize: 8, color: "#6b7280", letterSpacing: 1 }}>
+              --
+            </span>
+            <span style={keyStyle}>E</span>
+          </div>
         </button>
       </div>
 
@@ -934,7 +1031,7 @@ const ArenaBase = ({
         ✕ Sair
       </button>
 
-      {/* Scanlines */}
+      {/* Scanlines globais */}
       <div
         style={{
           position: "fixed",

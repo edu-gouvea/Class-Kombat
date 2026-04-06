@@ -3,12 +3,30 @@ import { atacar } from "../services/api";
 
 // Mapa de nome do personagem → imagem (da pasta public)
 const CHAR_IMAGES = {
-  arkanis: "/arkanis.jpeg",
-  artemis: "/artemis.jpeg",
-  cassian: "/cassian.jpeg",
-  draven: "/draven.jpeg",
-  korvus: "/korvus.jpeg",
-  nyxra: "/nyxra.jpeg",
+  arkanis: {
+    front: "/sprites/arkanis_front.png",
+    back: "/sprites/arkanis_back.png",
+  },
+  artemis: {
+    front: "/sprites/artemis_front.png",
+    back: "/sprites/artemis_back.png",
+  },
+  cassian: {
+    front: "/sprites/cassian_front.png",
+    back: "/sprites/cassian_back.png",
+  },
+  draven: {
+    front: "/sprites/draven_front.png",
+    back: "/sprites/draven_back.png",
+  },
+  korvus: {
+    front: "/sprites/korvus_front.png",
+    back: "/sprites/korvus_back.png",
+  },
+  nyxra: {
+    front: "/sprites/nyxra_front.png",
+    back: "/sprites/nyxra_back.png",
+  },
 };
 
 const ArenaBase = ({
@@ -54,13 +72,15 @@ const ArenaBase = ({
   const hpColor = (pct) =>
     pct > 50 ? "#22c55e" : pct > 25 ? "#eab308" : "#ef4444";
 
-  // Resolve imagem do personagem pelo nome vindo do backend
-  const imgP1 = player?.image || CHAR_IMAGES[p1.nome?.toLowerCase()] || null;
-  const imgP2 = CHAR_IMAGES[p2.nome?.toLowerCase()] || null;
+  const nomeP1 = p1.nome?.toLowerCase();
+  const nomeP2 = p2.nome?.toLowerCase();
+
+  const imgP1 = CHAR_IMAGES[nomeP1]?.back || null;
+  const imgP2 = CHAR_IMAGES[nomeP2]?.front || null;
 
   return (
     <div
-      className="w-screen h-screen relative font-mono overflow-hidden flex flex-col"
+      className="w-screen h-screen relative font-mono overflow-hidden"
       style={{
         backgroundImage: `url(${background})`,
         backgroundSize: "cover",
@@ -68,18 +88,90 @@ const ArenaBase = ({
       }}
     >
       {/* Overlay escuro */}
-      <div className="absolute inset-0 bg-black/40 z-0" />
+      <div className="absolute inset-0 bg-black/35 z-0" />
 
-      {/* ── BARRAS DE HP (topo) ─────────────────── */}
-      <div className="relative z-10 flex justify-between items-start p-4 gap-4">
+      {/* ── SPRITE P1 ───────────────────────────── */}
+      <div
+        className="absolute z-10 pointer-events-none"
+        style={{
+          bottom: "22%",
+          left: "23%", // 🔥 MAIS PRA DIREITA
+          transform: "translateX(-50%)",
+        }}
+      >
+        {imgP1 ? (
+          <img
+            src={imgP1}
+            alt={p1.nome}
+            style={{
+              width: "450px", // 🔥 AUMENTOU
+              height: "530px", // 🔥 AUMENTOU
+              objectFit: "cover",
+              objectPosition: "top",
+              transform: "scaleX(1)",
+              filter:
+                p1.hpAtual <= 0
+                  ? "grayscale(1) opacity(0.35) drop-shadow(2px 4px 0px #000)"
+                  : "drop-shadow(3px 6px 0px rgba(0,0,0,0.8))",
+              imageRendering: "pixelated",
+            }}
+          />
+        ) : (
+          <div
+            style={{ width: 120, height: 160 }}
+            className="bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center text-yellow-400 text-3xl font-black"
+          >
+            P1
+          </div>
+        )}
+      </div>
+
+      {/* ── SPRITE P2 ───────────────────────────── */}
+      <div
+        className="absolute z-10 pointer-events-none"
+        style={{
+          bottom: "52%", // 🔥 MAIS PRA CIMA
+          left: "76%",
+          transform: "translateX(-50%)",
+        }}
+      >
+        {imgP2 ? (
+          <img
+            src={imgP2}
+            alt={p2.nome}
+            style={{
+              width: "190px", // 🔥 AUMENTOU
+              height: "255px", // 🔥 AUMENTOU
+              objectFit: "cover",
+              objectPosition: "top",
+              transform: "scaleX(-1)",
+              filter:
+                p2.hpAtual <= 0
+                  ? "grayscale(1) opacity(0.35) drop-shadow(2px 4px 0px #000)"
+                  : "drop-shadow(-3px 6px 0px rgba(0,0,0,0.8))",
+              imageRendering: "auto",
+            }}
+          />
+        ) : (
+          <div
+            style={{ width: 100, height: 135 }}
+            className="bg-red-400/20 border-2 border-red-400 flex items-center justify-center text-red-400 text-3xl font-black"
+          >
+            P2
+          </div>
+        )}
+      </div>
+
+      {/* ── BARRAS DE HP ─────────────────── */}
+      <div className="absolute top-0 left-0 right-0 z-20 flex justify-between items-start p-4 gap-4">
         {/* P1 */}
-        <div className="flex-1 bg-black/70 border-2 border-yellow-500 p-3 max-w-xs">
+        <div className="flex-1 bg-black/75 border-2 border-yellow-500 p-3 max-w-xs">
           <div className="flex items-center gap-2 mb-1">
             {imgP1 && (
               <img
                 src={imgP1}
                 alt={p1.nome}
-                className="w-8 h-8 object-cover border border-yellow-500"
+                className="w-8 h-8 object-cover object-top border border-yellow-500"
               />
             )}
             <span className="text-yellow-400 font-black uppercase text-sm">
@@ -110,7 +202,7 @@ const ArenaBase = ({
         </div>
 
         {/* P2 */}
-        <div className="flex-1 bg-black/70 border-2 border-red-500 p-3 max-w-xs">
+        <div className="flex-1 bg-black/75 border-2 border-red-500 p-3 max-w-xs">
           <div className="flex items-center justify-end gap-2 mb-1">
             <span className="text-red-400 font-black uppercase text-sm">
               {p2.nome}
@@ -124,7 +216,7 @@ const ArenaBase = ({
               <img
                 src={imgP2}
                 alt={p2.nome}
-                className="w-8 h-8 object-cover border border-red-500"
+                className="w-8 h-8 object-cover object-top border border-red-500"
               />
             )}
           </div>
@@ -144,55 +236,7 @@ const ArenaBase = ({
         </div>
       </div>
 
-      {/* ── SPRITES ESTILO POKÉMON ───────────────── */}
-      <div className="relative z-10 flex justify-between items-end px-12 flex-1 pointer-events-none">
-        {/* Sprite P1 — lado esquerdo, de frente (espelhado) */}
-        <div className="flex flex-col items-center mb-4">
-          {imgP1 ? (
-            <img
-              src={imgP1}
-              alt={p1.nome}
-              className="w-36 h-44 object-cover object-top"
-              style={{
-                imageRendering: "pixelated",
-                filter:
-                  p1.hpAtual <= 0
-                    ? "grayscale(1) opacity(0.4)"
-                    : "drop-shadow(4px 4px 0px #000)",
-                transform: "scaleX(-1)",
-              }}
-            />
-          ) : (
-            <div className="w-36 h-44 bg-yellow-400/20 border-2 border-yellow-400 flex items-center justify-center text-yellow-400 text-4xl font-black">
-              P1
-            </div>
-          )}
-        </div>
-
-        {/* Sprite P2 — lado direito, de costas */}
-        <div className="flex flex-col items-center mb-4">
-          {imgP2 ? (
-            <img
-              src={imgP2}
-              alt={p2.nome}
-              className="w-28 h-36 object-cover object-top"
-              style={{
-                imageRendering: "pixelated",
-                filter:
-                  p2.hpAtual <= 0
-                    ? "grayscale(1) opacity(0.4)"
-                    : "drop-shadow(-4px 4px 0px #000)",
-              }}
-            />
-          ) : (
-            <div className="w-28 h-36 bg-red-400/20 border-2 border-red-400 flex items-center justify-center text-red-400 text-4xl font-black">
-              P2
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* ── TELA DE FIM DE JOGO ──────────────────── */}
+      {/* ── FIM DE JOGO ─────────────────── */}
       {!combateAtivo && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/80">
           <h2 className="text-6xl font-black italic text-yellow-400 mb-2 uppercase drop-shadow-[0_0_20px_gold]">
@@ -210,56 +254,52 @@ const ArenaBase = ({
         </div>
       )}
 
-      {/* ── LOG DE BATALHA ───────────────────────── */}
-      <div className="relative z-10 mx-4 mb-2">
-        <div className="bg-black/80 border-2 border-gray-600 p-3 min-h-[60px]">
-          <p className="text-white text-sm leading-relaxed">
-            {carregando ? "⚔️ Executando ação..." : log}
-          </p>
+      {/* ── LOG + BOTÕES ─────────────────── */}
+      <div className="absolute bottom-0 left-0 right-0 z-20">
+        <div className="mx-4 mb-2">
+          <div className="bg-black/85 border-2 border-gray-600 p-3 min-h-[52px]">
+            <p className="text-white text-sm leading-relaxed">
+              {carregando ? "⚔️ Executando ação..." : log}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 p-4 pt-0">
+          <button
+            onClick={() => handleAtacar("ATAQUE_RAPIDO")}
+            disabled={!combateAtivo || carregando}
+            className="bg-blue-700 hover:bg-blue-600 disabled:opacity-40 text-white font-black py-3 px-2 border-b-4 border-blue-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
+          >
+            <span className="text-[10px] text-blue-300 font-normal normal-case mb-0.5">
+              Ataque Rápido
+            </span>
+            {p1.ataques?.rapido ?? "—"}
+          </button>
+
+          <button
+            onClick={() => handleAtacar("ATAQUE_ESPECIAL")}
+            disabled={!combateAtivo || carregando || p1.especiaisRestantes <= 0}
+            className="bg-purple-700 hover:bg-purple-600 disabled:opacity-40 text-white font-black py-3 px-2 border-b-4 border-purple-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
+          >
+            <span className="text-[10px] text-purple-300 font-normal normal-case mb-0.5">
+              Especial{" "}
+              {p1.especiaisRestantes > 0 ? `(${p1.especiaisRestantes}x)` : "—"}
+            </span>
+            {p1.ataques?.especial ?? "—"}
+          </button>
+
+          <button
+            onClick={() => handleAtacar("ATAQUE_PASSIVA")}
+            disabled={!combateAtivo || carregando}
+            className="bg-green-800 hover:bg-green-700 disabled:opacity-40 text-white font-black py-3 px-2 border-b-4 border-green-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
+          >
+            <span className="text-[10px] text-green-300 font-normal normal-case mb-0.5">
+              Passiva
+            </span>
+            {p1.ataques?.passiva ?? "—"}
+          </button>
         </div>
       </div>
-
-      {/* ── BOTÕES DE AÇÃO ───────────────────────── */}
-      <div className="relative z-10 grid grid-cols-3 gap-2 p-4">
-        <button
-          onClick={() => handleAtacar("ATAQUE_RAPIDO")}
-          disabled={!combateAtivo || carregando}
-          className="bg-blue-700 hover:bg-blue-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-3 px-2 border-b-4 border-blue-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
-        >
-          <span className="text-[10px] text-blue-300 font-normal normal-case mb-0.5">
-            Ataque Rápido
-          </span>
-          {p1.ataques?.rapido ?? "—"}
-        </button>
-
-        <button
-          onClick={() => handleAtacar("ATAQUE_ESPECIAL")}
-          disabled={!combateAtivo || carregando || p1.especiaisRestantes <= 0}
-          className="bg-purple-700 hover:bg-purple-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-3 px-2 border-b-4 border-purple-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
-        >
-          <span className="text-[10px] text-purple-300 font-normal normal-case mb-0.5">
-            Especial{" "}
-            {p1.especiaisRestantes > 0
-              ? `(${p1.especiaisRestantes}x)`
-              : "— Esgotado"}
-          </span>
-          {p1.ataques?.especial ?? "—"}
-        </button>
-
-        <button
-          onClick={() => handleAtacar("ATAQUE_PASSIVA")}
-          disabled={!combateAtivo || carregando}
-          className="bg-green-800 hover:bg-green-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-black py-3 px-2 border-b-4 border-green-900 active:border-b-0 active:translate-y-1 transition-all text-sm uppercase flex flex-col items-center"
-        >
-          <span className="text-[10px] text-green-300 font-normal normal-case mb-0.5">
-            Passiva
-          </span>
-          {p1.ataques?.passiva ?? "—"}
-        </button>
-      </div>
-
-      {/* Scanlines */}
-      <div className="fixed inset-0 pointer-events-none z-50 opacity-10 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%)] bg-[length:100%_4px]" />
     </div>
   );
 };

@@ -14,25 +14,37 @@ public class Jogo {
         p2 = FactoryPersonagem.criar(nome2);
     }
 
+    /**
+     * Executa um turno completo.
+     * PVE/Torre: body = "ATAQUE_RAPIDO"  (P2 é bot)
+     * PVP:       body = "ATAQUE_RAPIDO|ATAQUE_ESPECIAL"  (P1|P2)
+     */
     public static String atacar(String acaoStr) {
         StringBuilder log = new StringBuilder();
+
+        // Suporte a PVP: "ACAOP1|ACAOP2"
+        String[] partes = acaoStr.split("\\|");
+        String acaoP1Str = partes[0].trim();
+        String acaoP2Str = partes.length > 1 ? partes[1].trim() : null;
 
         // Processar status de início de turno
         p1.processarStatus();
         p2.processarStatus();
 
-        // Turno do player
+        // Turno do P1
         if (!Status.isCongelado(p1.getStatus())) {
-            Acao acao = parseAcao(acaoStr);
+            Acao acao = parseAcao(acaoP1Str);
             log.append(executarAcao(p1, p2, acao));
         } else {
             log.append(p1.getNome()).append(" está congelado e perdeu o turno! ");
         }
 
-        // Turno do bot (só age se ainda estiver vivo)
+        // Turno do P2 (só age se ainda estiver vivo)
         if (p2.getHpatual() > 0) {
             if (!Status.isCongelado(p2.getStatus())) {
-                log.append(executarAcao(p2, p1, botEscolherAcao()));
+                // PVP: usa ação enviada pelo front; PVE/Torre: usa bot
+                Acao acaoP2 = (acaoP2Str != null) ? parseAcao(acaoP2Str) : botEscolherAcao();
+                log.append(executarAcao(p2, p1, acaoP2));
             } else {
                 log.append(p2.getNome()).append(" está congelado e perdeu o turno! ");
             }
@@ -97,7 +109,7 @@ public class Jogo {
         try {
             return Acao.valueOf(s.toUpperCase());
         } catch (Exception e) {
-            return Acao.ATAQUE_RAPIDO; // fallback se vier algo inesperado
+            return Acao.ATAQUE_RAPIDO;
         }
     }
 
@@ -108,7 +120,6 @@ public class Jogo {
             vencedor = p1.getHpatual() > 0 ? p1.getNome() : p2.getNome();
         }
 
-        // Escapa caracteres que quebrariam o JSON
         String logSeguro = log.replace("\\", "\\\\")
                               .replace("\"", "'")
                               .replace("\n", " ")

@@ -11,13 +11,15 @@ const characters = [
   { id: 6, name: "Artemis", class: "Huntress", image: "/artemis.jpeg" },
 ];
 
-const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
+const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
+  // PVP permite 2 personagens; PVE e Torre apenas 1
+  const maxSlots = modo === "pvp" ? 2 : 1;
   const [selectedIds, setSelectedIds] = useState([]);
 
   const togglePersonagem = (id) => {
     if (selectedIds.includes(id)) {
       setSelectedIds(selectedIds.filter((favId) => favId !== id));
-    } else if (selectedIds.length < 2) {
+    } else if (selectedIds.length < maxSlots) {
       setSelectedIds([...selectedIds, id]);
     }
   };
@@ -63,7 +65,7 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
           {characters.map((char) => {
             const isSelected = selectedIds.includes(char.id);
             const playerIndex = selectedIds.indexOf(char.id);
-            const canSelect = selectedIds.length < 2 || isSelected;
+            const canSelect = selectedIds.length < maxSlots || isSelected;
 
             return (
               <div
@@ -135,7 +137,7 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar }) => {
                 : "bg-slate-700 text-slate-500 border-b-8 border-slate-800 opacity-50 cursor-not-allowed"
             }`}
         >
-          {selectedIds.length === 2 ? "Lute!" : "Pronto?"}
+          {modo === "pvp" ? (selectedIds.length === 2 ? "Lute!" : "Pronto?") : (selectedIds.length === 1 ? "Pronto!" : "Escolha um personagem")}
         </button>
       </div>
 

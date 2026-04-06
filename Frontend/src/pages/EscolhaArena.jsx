@@ -72,7 +72,7 @@ const EscolhaArena = ({ onVoltar, onConfirmar }) => {
       </button>
 
       <h1 className="text-4xl md:text-6xl font-black italic text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 mb-10 uppercase tracking-tighter text-center">
-        Stage Select
+        ESCOLHA ARENA
       </h1>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 max-w-5xl w-full mb-32">

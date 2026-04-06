@@ -11,7 +11,7 @@ const EscolhaModo = ({ onSelecionarModo, onVoltar }) => {
         &lt; VOLTAR
       </button>
 
-      {/* Título Estilo Logo de Luta */}
+      {/* Título */}
       <div className="z-10 mb-20 relative">
         <h1 className="text-6xl md:text-8xl tracking-tighter uppercase font-black italic text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 via-orange-500 to-red-600 drop-shadow-[4px_4px_0px_#4a044e]">
           ESCOLHA O MODO
@@ -19,9 +19,9 @@ const EscolhaModo = ({ onSelecionarModo, onVoltar }) => {
         <div className="absolute -bottom-2 left-0 w-full h-1 bg-blue-500 shadow-[0_0_10px_#3b82f6]"></div>
       </div>
 
-      {/* Opções de Modo - Estilo Arcade */}
-      <div className="flex flex-col md:flex-row gap-12 z-10 w-full max-w-5xl px-8">
-        {/* Card PvE - Player vs CPU */}
+      {/* MODOS */}
+      <div className="flex flex-col md:flex-row gap-12 z-10 w-full max-w-6xl px-8">
+        {/* PvE */}
         <div
           onClick={() => onSelecionarModo("pve")}
           className="group flex-1 cursor-pointer transition-all border-4 border-blue-900 bg-slate-900 p-6 relative flex flex-col items-center shadow-[8px_8px_0px_#1e3a8a] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#3b82f6] active:translate-x-[2px] active:translate-y-[2px]"
@@ -40,7 +40,7 @@ const EscolhaModo = ({ onSelecionarModo, onVoltar }) => {
           </p>
         </div>
 
-        {/* Card PvP - Player vs Player */}
+        {/* PvP */}
         <div
           onClick={() => onSelecionarModo("pvp")}
           className="group flex-1 cursor-pointer transition-all border-4 border-red-900 bg-slate-900 p-6 relative flex flex-col items-center shadow-[8px_8px_0px_#7f1d1d] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#ef4444] active:translate-x-[2px] active:translate-y-[2px]"
@@ -58,9 +58,28 @@ const EscolhaModo = ({ onSelecionarModo, onVoltar }) => {
             Derrote seu amigo <br /> Numa batalha
           </p>
         </div>
+
+        {/* 🔥 NOVO MODO TORRE */}
+        <div
+          onClick={() => onSelecionarModo("torre")}
+          className="group flex-1 cursor-pointer transition-all border-4 border-yellow-900 bg-slate-900 p-6 relative flex flex-col items-center shadow-[8px_8px_0px_#78350f] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_#facc15] active:translate-x-[2px] active:translate-y-[2px]"
+        >
+          <div className="bg-yellow-600 w-full text-center py-1 mb-4 border-b-4 border-yellow-900 font-bold italic">
+            TORRE
+          </div>
+          <div className="text-7xl mb-4 grayscale group-hover:grayscale-0 transition-all duration-300">
+            🏆
+          </div>
+          <h2 className="text-4xl font-black uppercase tracking-tighter text-white group-hover:animate-pulse">
+            MODO TORRE
+          </h2>
+          <p className="text-yellow-400 text-[10px] mt-4 uppercase font-bold text-center leading-tight">
+            Derrote vários inimigos <br /> Suba na torre
+          </p>
+        </div>
       </div>
 
-      {/* Barra de Créditos / Footer */}
+      {/* Footer */}
       <div className="absolute bottom-0 w-full bg-blue-900 py-2 flex justify-around items-center border-t-4 border-blue-500">
         <span className="text-yellow-400 text-xs font-bold tracking-[0.2em]">
           The POO game
@@ -73,10 +92,10 @@ const EscolhaModo = ({ onSelecionarModo, onVoltar }) => {
         </span>
       </div>
 
-      {/* Overlay Scanlines (Efeito de Linhas da TV) */}
+      {/* Scanlines */}
       <div className="fixed inset-0 pointer-events-none z-50 opacity-30 select-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,0,0.06))] bg-[length:100%_4px,3px_100%]"></div>
 
-      {/* Flicker de brilho da tela */}
+      {/* Flicker */}
       <div className="fixed inset-0 pointer-events-none z-40 animate-[pulse_5s_infinite] bg-white/5 opacity-10"></div>
     </div>
   );

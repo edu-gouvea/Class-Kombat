@@ -12,6 +12,7 @@ const characters = [
 ];
 
 const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
+  // PVP: 2 slots (P1 + P2) | PVE: 2 slots (P1 + CPU) | Torre: 1 slot (P1)
   const maxSlots = modo === "pvp" || modo === "pve" ? 2 : 1;
   const [selectedIds, setSelectedIds] = useState([]);
 
@@ -127,7 +128,7 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
                       className={`absolute -top-4 -left-4 px-3 py-1 text-sm font-black italic shadow-[4px_4px_0px_#000] border-2 
                       ${playerIndex === 0 ? "bg-red-600 border-red-300" : "bg-blue-600 border-blue-300"}`}
                     >
-                      P{playerIndex + 1}
+                      {playerIndex === 0 ? "P1" : modo === "pve" ? "CPU" : "P2"}
                     </div>
                   )}
                 </div>
@@ -140,10 +141,14 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
       <div className="fixed bottom-0 w-full bg-blue-900 py-6 flex justify-center border-t-4 border-blue-500 shadow-[0_-10px_20px_rgba(0,0,0,0.5)] z-20">
         <button
           onClick={handleConfirmar}
-          disabled={selectedIds.length === 0}
+          disabled={
+            selectedIds.length === 0 ||
+            (modo === "pve" && selectedIds.length < 2)
+          }
           className={`px-20 py-4 text-3xl font-black italic transition-all uppercase tracking-tighter
             ${
-              selectedIds.length > 0
+              selectedIds.length > 0 &&
+              !(modo === "pve" && selectedIds.length < 2)
                 ? "bg-yellow-500 text-black border-b-8 border-yellow-700 hover:bg-yellow-400 hover:border-yellow-600 active:border-b-0 active:translate-y-2 shadow-[0_5px_15px_rgba(234,179,8,0.4)]"
                 : "bg-slate-700 text-slate-500 border-b-8 border-slate-800 opacity-50 cursor-not-allowed"
             }`}
@@ -152,9 +157,15 @@ const EscolhaPersonagem = ({ onVoltar, onConfirmar, modo }) => {
             ? selectedIds.length === 2
               ? "Lute!"
               : "Pronto?"
-            : selectedIds.length === 1
-              ? "Pronto!"
-              : "Escolha um personagem"}
+            : modo === "pve"
+              ? selectedIds.length === 2
+                ? "Lute!"
+                : selectedIds.length === 1
+                  ? "Escolha a CPU"
+                  : "Escolha um personagem"
+              : selectedIds.length === 1
+                ? "Pronto!"
+                : "Escolha um personagem"}
         </button>
       </div>
 

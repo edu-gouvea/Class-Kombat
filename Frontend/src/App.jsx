@@ -111,7 +111,9 @@ function App() {
     const p2Nome =
       config.modo === "pvp" && config.herois[1]
         ? config.herois[1].name.toLowerCase()
-        : (TODOS.find((n) => ARENA_DO_INIMIGO[n] === arena.id) ?? "draven");
+        : config.modo === "pve" && config.herois[1]
+          ? config.herois[1].name.toLowerCase()
+          : (TODOS.find((n) => ARENA_DO_INIMIGO[n] === arena.id) ?? "draven");
 
     const estado = await iniciarJogo(p1Nome, p2Nome);
     setConfig((p) => ({ ...p, arena, estadoJogo: estado }));
